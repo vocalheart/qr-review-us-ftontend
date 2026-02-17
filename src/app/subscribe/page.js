@@ -84,7 +84,6 @@ export default function SubscribePage() {
       setError("Payment verification timed out. Please refresh and try again.");
     }, 10 * 60 * 1000);
   };
-
   const startSubscription = async () => {
     try {
       setLoading(true);
@@ -96,7 +95,7 @@ export default function SubscribePage() {
       if (res.data?.subscription?.short_url) {
         const paymentUrl = res.data.subscription.short_url;
 
-        // 🔥 Always open NEW payment window
+        // Always open NEW payment window
         const paymentWindow = window.open(paymentUrl, "_blank");
 
         if (!paymentWindow) {
@@ -120,7 +119,7 @@ export default function SubscribePage() {
     }
   };
 
-  // 🔄 Loading screen
+  //  Loading screen
   if (checkingStatus) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
