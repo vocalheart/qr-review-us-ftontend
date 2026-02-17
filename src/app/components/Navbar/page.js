@@ -6,19 +6,7 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 import { useState, useRef, useEffect } from "react";
 import logo from "../../../../public/reviwist.png";
-import {
-  ChevronDown,
-  LogOut,
-  User,
-  QrCode,
-  LayoutDashboard,
-  FileText,
-  Menu,
-  X,
-  CheckCircle,
-  History
-} from "lucide-react";
-
+import {ChevronDown,LogOut,User,QrCode,LayoutDashboard,FileText,Menu,X,CheckCircle,History} from "lucide-react";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -33,15 +21,14 @@ export default function Navbar() {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setIsDropdownOpen(false);
-      }
+      };
       if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
         setIsMobileMenuOpen(false);
-      }
+      };
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
   // Lock scroll when mobile menu open
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? "hidden" : "unset";
@@ -49,16 +36,13 @@ export default function Navbar() {
       document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen]);
-
   const handleLogout = async () => {
     await logout();
     setIsDropdownOpen(false);
     setIsMobileMenuOpen(false);
   };
-
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
   const isActive = (path) => pathname === path;
-
   // Private links for logged-in users
   const privateLinks = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -73,13 +57,11 @@ export default function Navbar() {
     { href: "/features", label: "Features" },
     { href: "/contact", label: "Contact" },
   ];
-
   return (
     <>
       <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
           <div className="flex justify-between items-center h-14 sm:h-16">
-
             {/* LOGO */}
             <Link
               href="/"
@@ -281,7 +263,6 @@ export default function Navbar() {
                   <LogOut className="w-4 h-4" />
                   Logout
                 </button>
-
                 <div className="mt-2 pt-3 border-t border-gray-300">
                   <p className="text-sm font-semibold text-gray-900 px-4 truncate">{user.email}</p>
                   <p className="text-sm text-indigo-600 px-4 mt-1 flex items-center gap-1">
