@@ -15,7 +15,6 @@ export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
-
   // Close menus when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -76,7 +75,6 @@ export default function Navbar() {
                 className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20" 
               />
             </Link>
-
             {/* DESKTOP NAV */}
             <div className="hidden md:flex items-center gap-1">
               {/* Public Links - only if not logged in */}
@@ -92,7 +90,6 @@ export default function Navbar() {
                   {label}
                 </Link>
               ))}
-
               {user ? (
                 <>
                   {/* Private Links */}
