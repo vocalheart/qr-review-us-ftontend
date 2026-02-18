@@ -14,6 +14,12 @@ export default function SubscribePage() {
   const pollingRef = useRef(null);
   const timeoutRef = useRef(null);
 
+  // Detect iOS devices (Safari, Chrome iOS, WebView)
+  const isIOS = () => {
+    if (typeof navigator === "undefined") return false;
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  };
+
   useEffect(() => {
     checkSubscriptionStatus();
 
@@ -46,18 +52,17 @@ export default function SubscribePage() {
     }
   };
 
-  // 🔥 Start polling after opening payment
+  // 🔥 Polling after payment window opened
   const startPollingForPayment = () => {
-    stopPolling(); // safety
+    stopPolling();
     setWaitingForPayment(true);
     setInfo("Waiting for payment confirmation...");
 
     pollingRef.current = setInterval(async () => {
       const status = await checkSubscriptionStatus();
-
       if (!status) return;
 
-      // ✅ SUCCESS CASE
+      // ✅ Success
       if (status.status === "active") {
         stopPolling();
         setWaitingForPayment(false);
@@ -68,7 +73,7 @@ export default function SubscribePage() {
         }, 1500);
       }
 
-      // ❌ FAILED / CANCELLED
+      // ❌ Failed / Cancelled
       if (status.status === "failed" || status.status === "cancelled") {
         stopPolling();
         setWaitingForPayment(false);
@@ -76,7 +81,7 @@ export default function SubscribePage() {
       }
     }, 4000);
 
-    // ⏱ Timeout safety (10 min)
+    // ⏱ 10 min timeout safety
     timeoutRef.current = setTimeout(() => {
       stopPolling();
       setWaitingForPayment(false);
@@ -84,29 +89,56 @@ export default function SubscribePage() {
       setError("Payment verification timed out. Please refresh and try again.");
     }, 10 * 60 * 1000);
   };
+
+  // 🚀 FULL iOS + Desktop SAFE subscription handler
   const startSubscription = async () => {
     try {
       setLoading(true);
       setError("");
       setInfo("");
 
+      // 📱 iOS → Direct redirect (most reliable)
+      if (isIOS()) {
+        setInfo("Redirecting to payment...");
+
+        const res = await axios.post("/create-subscription", {});
+
+        if (res.data?.subscription?.short_url) {
+          const paymentUrl = res.data.subscription.short_url;
+
+          // iOS NEVER block redirect
+          window.location.href = paymentUrl;
+          return;
+        } else {
+          setError("Unable to start subscription. Please try again.");
+          return;
+        }
+      }
+
+      // 💻 Desktop / Android → Open blank window first (anti popup block)
+      const paymentWindow = window.open("", "_blank");
+
+      if (!paymentWindow) {
+        setError("Popup blocked! Please allow popups and try again.");
+        setLoading(false);
+        return;
+      }
+
+      setInfo("Opening secure payment page...");
+
+      // Call backend AFTER window opened (important)
       const res = await axios.post("/create-subscription", {});
 
       if (res.data?.subscription?.short_url) {
         const paymentUrl = res.data.subscription.short_url;
 
-        // Always open NEW payment window
-        const paymentWindow = window.open(paymentUrl, "_blank");
-
-        if (!paymentWindow) {
-          setError("Popup blocked! Please allow popups and try again.");
-          setLoading(false);
-          return;
-        }
+        // Redirect the already opened tab
+        paymentWindow.location.href = paymentUrl;
 
         setInfo("Payment window opened. Complete payment to activate.");
         startPollingForPayment();
       } else {
+        paymentWindow.close();
         setError("Unable to start subscription. Please try again.");
       }
     } catch (err) {
@@ -119,7 +151,7 @@ export default function SubscribePage() {
     }
   };
 
-  //  Loading screen
+  // ⏳ Loading screen
   if (checkingStatus) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
@@ -133,7 +165,7 @@ export default function SubscribePage() {
     );
   }
 
-  //  ACTIVE SUBSCRIPTION UI
+  // ✅ ACTIVE SUBSCRIPTION UI
   if (subscriptionStatus?.status === "active") {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center px-4">
@@ -215,7 +247,7 @@ export default function SubscribePage() {
               </span>
             </div>
             <p className="text-xs mt-2">
-              Complete the payment in the new tab. This page will auto-activate.
+              Complete the payment. This page will auto-activate.
             </p>
           </div>
         ) : (
