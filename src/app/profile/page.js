@@ -6,15 +6,7 @@ import * as z from "zod";
 import axios from "../llb/axios";
 import ProtectedRoute from "../components/ProtectedRoute";
 import toast, { Toaster } from "react-hot-toast";
-import {
-  UserIcon,
-  EnvelopeIcon,
-  PhoneIcon,
-  KeyIcon,
-  CheckIcon,
-  XMarkIcon,
-  ArrowPathIcon,
-} from "@heroicons/react/24/outline";
+import {UserIcon,EnvelopeIcon,PhoneIcon,KeyIcon,CheckIcon,XMarkIcon,ArrowPathIcon} from "@heroicons/react/24/outline";
 
 /* ------------------------------------------------------------------ */
 /* Validation Schemas                                                   */
