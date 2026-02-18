@@ -14,7 +14,7 @@ export default function SubscribePage() {
   const pollingRef = useRef(null);
   const timeoutRef = useRef(null);
 
-  // Detect iOS devices (Safari, Chrome iOS, WebView)
+  // Detect iOS devices
   const isIOS = () => {
     if (typeof navigator === "undefined") return false;
     return /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -23,10 +23,31 @@ export default function SubscribePage() {
   useEffect(() => {
     checkSubscriptionStatus();
 
+    // Auto check when user returns from payment tab (VERY IMPORTANT)
+    const handleFocus = () => {
+      if (waitingForPayment) {
+        checkSubscriptionStatus();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden && waitingForPayment) {
+        checkSubscriptionStatus();
+      }
+    };
+
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
     return () => {
       stopPolling();
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener(
+        "visibilitychange",
+        handleVisibilityChange
+      );
     };
-  }, []);
+  }, [waitingForPayment]);
 
   const stopPolling = () => {
     if (pollingRef.current) {
@@ -42,8 +63,22 @@ export default function SubscribePage() {
   const checkSubscriptionStatus = async () => {
     try {
       const res = await axios.get("/subscription-status");
-      setSubscriptionStatus(res.data);
-      return res.data;
+      const data = res.data;
+      setSubscriptionStatus(data);
+
+      // AUTO ACTIVATE WITHOUT REFRESH
+      if (data?.status === "active") {
+        stopPolling();
+        setWaitingForPayment(false);
+        setInfo("Payment successful! Activating your subscription...");
+
+        // Small delay for better UX
+        setTimeout(() => {
+          window.location.href = "/dashboard";
+        }, 1200);
+      }
+
+      return data;
     } catch (err) {
       console.error("Error checking status:", err);
       return null;
@@ -52,61 +87,53 @@ export default function SubscribePage() {
     }
   };
 
-  // 🔥 Polling after payment window opened
+  // Smart polling (works even if user comes back from payment)
   const startPollingForPayment = () => {
     stopPolling();
     setWaitingForPayment(true);
     setInfo("Waiting for payment confirmation...");
 
+    // Fast polling for first 30 seconds (real-time feel)
     pollingRef.current = setInterval(async () => {
       const status = await checkSubscriptionStatus();
       if (!status) return;
 
-      // ✅ Success
-      if (status.status === "active") {
-        stopPolling();
-        setWaitingForPayment(false);
-        setInfo("Payment successful! Redirecting to dashboard...");
-
-        setTimeout(() => {
-          window.location.href = "/dashboard";
-        }, 1500);
-      }
-
-      // ❌ Failed / Cancelled
       if (status.status === "failed" || status.status === "cancelled") {
         stopPolling();
         setWaitingForPayment(false);
         setError("Payment failed or cancelled. Please try again.");
       }
-    }, 4000);
+    }, 3000);
 
-    // ⏱ 10 min timeout safety
+    //  Safety timeout (10 min)
     timeoutRef.current = setTimeout(() => {
       stopPolling();
       setWaitingForPayment(false);
       setInfo("");
-      setError("Payment verification timed out. Please refresh and try again.");
+      setError("Payment verification timed out. Please try again.");
     }, 10 * 60 * 1000);
   };
 
-  // 🚀 FULL iOS + Desktop SAFE subscription handler
+  //  FINAL iOS + Desktop + Auto Refresh Safe Handler
   const startSubscription = async () => {
     try {
       setLoading(true);
       setError("");
       setInfo("");
 
-      // 📱 iOS → Direct redirect (most reliable)
+      // iOS / Safari / WebView (BEST: redirect)
       if (isIOS()) {
-        setInfo("Redirecting to payment...");
+        setInfo("Redirecting to secure payment...");
 
         const res = await axios.post("/create-subscription", {});
 
         if (res.data?.subscription?.short_url) {
           const paymentUrl = res.data.subscription.short_url;
 
-          // iOS NEVER block redirect
+          // Start polling BEFORE redirect (key fix)
+          startPollingForPayment();
+
+          // Redirect (never blocked on iOS)
           window.location.href = paymentUrl;
           return;
         } else {
@@ -115,7 +142,7 @@ export default function SubscribePage() {
         }
       }
 
-      // 💻 Desktop / Android → Open blank window first (anti popup block)
+      // Desktop / Android (anti-popup block)
       const paymentWindow = window.open("", "_blank");
 
       if (!paymentWindow) {
@@ -126,16 +153,16 @@ export default function SubscribePage() {
 
       setInfo("Opening secure payment page...");
 
-      // Call backend AFTER window opened (important)
+      // Call API after opening window (critical)
       const res = await axios.post("/create-subscription", {});
 
       if (res.data?.subscription?.short_url) {
         const paymentUrl = res.data.subscription.short_url;
 
-        // Redirect the already opened tab
+        // Redirect opened window to payment
         paymentWindow.location.href = paymentUrl;
 
-        setInfo("Payment window opened. Complete payment to activate.");
+        // Start real-time polling
         startPollingForPayment();
       } else {
         paymentWindow.close();
@@ -151,7 +178,7 @@ export default function SubscribePage() {
     }
   };
 
-  // ⏳ Loading screen
+  //  Loading screen
   if (checkingStatus) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
@@ -165,13 +192,13 @@ export default function SubscribePage() {
     );
   }
 
-  // ✅ ACTIVE SUBSCRIPTION UI
+  // ACTIVE SUBSCRIPTION UI (auto shows without refresh)
   if (subscriptionStatus?.status === "active") {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-2xl shadow-lg p-8 text-center">
           <h1 className="text-3xl font-bold text-green-800 mb-4">
-            Active Subscription
+            🎉 Subscription Activated
           </h1>
 
           <div className="bg-white rounded-xl p-6 mb-6">
@@ -188,25 +215,6 @@ export default function SubscribePage() {
                   {subscriptionStatus.hoursRemaining || 0}
                 </p>
               </div>
-            </div>
-
-            <div className="mt-4 pt-4 border-t">
-              <p className="text-sm text-gray-600">
-                <strong>Started:</strong>{" "}
-                {subscriptionStatus.currentStart
-                  ? new Date(
-                      subscriptionStatus.currentStart
-                    ).toLocaleDateString()
-                  : "N/A"}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Expires:</strong>{" "}
-                {subscriptionStatus.currentEnd
-                  ? new Date(
-                      subscriptionStatus.currentEnd
-                    ).toLocaleDateString()
-                  : "N/A"}
-              </p>
             </div>
           </div>
 
@@ -247,7 +255,8 @@ export default function SubscribePage() {
               </span>
             </div>
             <p className="text-xs mt-2">
-              Complete the payment. This page will auto-activate.
+              Complete the payment. Subscription will activate automatically
+              (no refresh needed).
             </p>
           </div>
         ) : (
