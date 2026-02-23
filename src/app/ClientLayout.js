@@ -4,24 +4,29 @@ import { useState } from "react";
 import Navbar from "./components/Navbar/page";
 import Footer from "./components/footer/page";
 import Sidebar from "./components/sidebar/page";
+import { useAuth } from "./context/AuthContext"; // 🔥 import auth
 
 export default function ClientLayout({ children }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { user, loading } = useAuth(); // 🔥 get user state
+
+  // Jab auth loading ho tab kuch render na kare (avoid flicker)
+  if (loading) return null;
 
   return (
     <>
-      {/* Sidebar receives collapse state as props */}
-      <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      {/* 🔐 Show Sidebar only when user is logged in */}
+      {user && (
+        <Sidebar
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+        />
+      )}
 
-      {/*
-        Main content margin synced with sidebar width:
-        - Mobile:           ml-0   (sidebar is overlay, no margin needed)
-        - Desktop expanded: ml-64  (256px)
-        - Desktop collapsed: ml-16 (64px icon-only)
-      */}
+      {/* Dynamic margin only when sidebar exists */}
       <div
         className={`flex flex-col min-h-screen transition-all duration-300 ease-in-out ml-0 ${
-          isCollapsed ? "md:ml-16" : "md:ml-64"
+          user ? (isCollapsed ? "md:ml-16" : "md:ml-64") : "ml-0"
         }`}
       >
         <Navbar />

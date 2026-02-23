@@ -313,5 +313,4 @@ function Page() {
     </ProtectedRoute>
   );
 }
-
 export default Page;
