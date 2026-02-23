@@ -2,6 +2,21 @@
 
 import { useState, useEffect, useRef } from "react";
 import axios from "../llb/axios";
+import {
+  CheckCircle,
+  Zap,
+  Shield,
+  Star,
+  Clock,
+  ArrowRight,
+  Loader2,
+  AlertCircle,
+  QrCode,
+  BarChart2,
+  MessageSquare,
+  Calendar,
+  RefreshCw,
+} from "lucide-react";
 
 export default function SubscribePage() {
   const [loading, setLoading] = useState(false);
@@ -14,7 +29,6 @@ export default function SubscribePage() {
   const pollingRef = useRef(null);
   const timeoutRef = useRef(null);
 
-  // Detect iOS devices (Safari, Chrome iOS, WebView)
   const isIOS = () => {
     if (typeof navigator === "undefined") return false;
     return /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -22,21 +36,12 @@ export default function SubscribePage() {
 
   useEffect(() => {
     checkSubscriptionStatus();
-
-    return () => {
-      stopPolling();
-    };
+    return () => stopPolling();
   }, []);
 
   const stopPolling = () => {
-    if (pollingRef.current) {
-      clearInterval(pollingRef.current);
-      pollingRef.current = null;
-    }
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
+    if (pollingRef.current) { clearInterval(pollingRef.current); pollingRef.current = null; }
+    if (timeoutRef.current) { clearTimeout(timeoutRef.current); timeoutRef.current = null; }
   };
 
   const checkSubscriptionStatus = async () => {
@@ -52,7 +57,6 @@ export default function SubscribePage() {
     }
   };
 
-  //  Polling after payment window opened
   const startPollingForPayment = () => {
     stopPolling();
     setWaitingForPayment(true);
@@ -61,19 +65,12 @@ export default function SubscribePage() {
     pollingRef.current = setInterval(async () => {
       const status = await checkSubscriptionStatus();
       if (!status) return;
-
-      //  Success
       if (status.status === "active") {
         stopPolling();
         setWaitingForPayment(false);
         setInfo("Payment successful! Redirecting to dashboard...");
-
-        setTimeout(() => {
-          window.location.href = "/dashboard";
-        }, 1500);
+        setTimeout(() => { window.location.href = "/dashboard"; }, 1500);
       }
-
-      //  Failed / Cancelled
       if (status.status === "failed" || status.status === "cancelled") {
         stopPolling();
         setWaitingForPayment(false);
@@ -81,7 +78,6 @@ export default function SubscribePage() {
       }
     }, 4000);
 
-    // ⏱ 10 min timeout safety
     timeoutRef.current = setTimeout(() => {
       stopPolling();
       setWaitingForPayment(false);
@@ -90,24 +86,17 @@ export default function SubscribePage() {
     }, 10 * 60 * 1000);
   };
 
-  // FULL iOS + Desktop SAFE subscription handler
   const startSubscription = async () => {
     try {
       setLoading(true);
       setError("");
       setInfo("");
 
-      //iOS → Direct redirect (most reliable)
       if (isIOS()) {
         setInfo("Redirecting to payment...");
-
         const res = await axios.post("/create-subscription", {});
-
         if (res.data?.subscription?.short_url) {
-          const paymentUrl = res.data.subscription.short_url;
-
-          // iOS NEVER block redirect
-          window.location.href = paymentUrl;
+          window.location.href = res.data.subscription.short_url;
           return;
         } else {
           setError("Unable to start subscription. Please try again.");
@@ -115,9 +104,7 @@ export default function SubscribePage() {
         }
       }
 
-      //  Desktop / Android → Open blank window first (anti popup block)
       const paymentWindow = window.open("", "_blank");
-
       if (!paymentWindow) {
         setError("Popup blocked! Please allow popups and try again.");
         setLoading(false);
@@ -125,12 +112,9 @@ export default function SubscribePage() {
       }
 
       setInfo("Opening secure payment page...");
-      // Call backend AFTER window opened (important)
       const res = await axios.post("/create-subscription", {});
       if (res.data?.subscription?.short_url) {
-        const paymentUrl = res.data.subscription.short_url;
-        // Redirect the already opened tab
-        paymentWindow.location.href = paymentUrl;
+        paymentWindow.location.href = res.data.subscription.short_url;
         setInfo("Payment window opened. Complete payment to activate.");
         startPollingForPayment();
       } else {
@@ -138,132 +122,235 @@ export default function SubscribePage() {
         setError("Unable to start subscription. Please try again.");
       }
     } catch (err) {
-      console.error("Subscription error:", err);
-      setError(
-        err?.response?.data?.message || "Something went wrong. Try again."
-      );
+      setError(err?.response?.data?.message || "Something went wrong. Try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Loading screen
+  // ── Features list ──
+  const features = [
+    { icon: <QrCode className="w-4 h-4" />, text: "Unlimited QR Code Generation" },
+    { icon: <BarChart2 className="w-4 h-4" />, text: "Analytics & Rating Dashboard" },
+    { icon: <MessageSquare className="w-4 h-4" />, text: "Feedback Collection & Management" },
+    { icon: <Shield className="w-4 h-4" />, text: "Smart Review Filtering" },
+    { icon: <Zap className="w-4 h-4" />, text: "Instant Activation" },
+  ];
+
+  // ── Loading ──
   if (checkingStatus) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">
-            Checking subscription status...
-          </p>
+          <div className="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="w-7 h-7 text-indigo-600 animate-spin" />
+          </div>
+          <p className="text-slate-600 font-medium text-sm">Checking subscription status...</p>
         </div>
       </div>
     );
   }
 
-  // ACTIVE SUBSCRIPTION UI
+  // ── ACTIVE SUBSCRIPTION ──
   if (subscriptionStatus?.status === "active") {
+    const daysLeft = subscriptionStatus.daysRemaining || 0;
+    const hoursLeft = subscriptionStatus.hoursRemaining || 0;
+    const startDate = subscriptionStatus.currentStart
+      ? new Date(subscriptionStatus.currentStart).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
+      : "N/A";
+    const endDate = subscriptionStatus.currentEnd
+      ? new Date(subscriptionStatus.currentEnd).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
+      : "N/A";
+
+    const totalHours = 7 * 24;
+    const remainingHours = daysLeft * 24 + hoursLeft;
+    const pct = Math.max(0, Math.min(100, (remainingHours / totalHours) * 100));
+
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center px-4">
-        <div className="w-full max-w-md bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-2xl shadow-lg p-8 text-center">
-          <h1 className="text-3xl font-bold text-green-800 mb-4">
-            Active Subscription
-          </h1>
-
-          <div className="bg-white rounded-xl p-6 mb-6">
-            <div className="grid grid-cols-2 gap-4 text-left">
-              <div>
-                <p className="text-sm text-gray-500">Days Remaining</p>
-                <p className="text-2xl font-bold text-green-600">
-                  {subscriptionStatus.daysRemaining || 0}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-500">Hours Remaining</p>
-                <p className="text-2xl font-bold text-green-600">
-                  {subscriptionStatus.hoursRemaining || 0}
-                </p>
-              </div>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          {/* Active Badge */}
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-4">
+              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+              SUBSCRIPTION ACTIVE
             </div>
-
-            <div className="mt-4 pt-4 border-t">
-              <p className="text-sm text-gray-600">
-                <strong>Started:</strong>{" "}
-                {subscriptionStatus.currentStart
-                  ? new Date(
-                      subscriptionStatus.currentStart
-                    ).toLocaleDateString()
-                  : "N/A"}
-              </p>
-              <p className="text-sm text-gray-600">
-                <strong>Expires:</strong>{" "}
-                {subscriptionStatus.currentEnd
-                  ? new Date(
-                      subscriptionStatus.currentEnd
-                    ).toLocaleDateString()
-                  : "N/A"}
-              </p>
-            </div>
+            <h1 className="text-2xl font-extrabold text-slate-900">You're all set!</h1>
+            <p className="text-slate-500 text-sm mt-1">Your premium plan is running smoothly</p>
           </div>
 
-          <button
-            onClick={() => (window.location.href = "/dashboard")}
-            className="w-full py-3 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold"
-          >
-            Go to Dashboard →
-          </button>
+          {/* Card */}
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            {/* Green Header */}
+            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 px-6 py-8 text-white">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <p className="text-emerald-100 text-xs font-medium uppercase tracking-wider mb-1">7-Day Premium</p>
+                  <p className="text-3xl font-extrabold">₹2 <span className="text-lg font-normal opacity-70">/ week</span></p>
+                </div>
+                <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
+                  <CheckCircle className="w-7 h-7 text-white" />
+                </div>
+              </div>
+
+              {/* Progress Bar */}
+              <div>
+                <div className="flex justify-between text-xs text-emerald-100 mb-2">
+                  <span>Time remaining</span>
+                  <span>{daysLeft}d {hoursLeft}h left</span>
+                </div>
+                <div className="bg-white/20 rounded-full h-2">
+                  <div
+                    className="bg-white rounded-full h-2 transition-all duration-700"
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Details */}
+            <div className="px-6 py-5 space-y-3">
+              <div className="flex items-center justify-between py-3 border-b border-slate-100">
+                <div className="flex items-center gap-2 text-slate-500 text-sm">
+                  <Calendar className="w-4 h-4" />
+                  Started
+                </div>
+                <span className="text-slate-800 font-semibold text-sm">{startDate}</span>
+              </div>
+              <div className="flex items-center justify-between py-3">
+                <div className="flex items-center gap-2 text-slate-500 text-sm">
+                  <Clock className="w-4 h-4" />
+                  Expires
+                </div>
+                <span className="text-slate-800 font-semibold text-sm">{endDate}</span>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="px-6 pb-6">
+              <button
+                onClick={() => (window.location.href = "/dashboard")}
+                className="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all shadow-md hover:shadow-lg active:scale-95 flex items-center justify-center gap-2"
+              >
+                Go to Dashboard
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
-  // 💳 SUBSCRIBE UI
+  // ── SUBSCRIBE UI ──
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white border rounded-2xl shadow-lg p-8 text-center">
-        <h1 className="text-3xl font-bold text-black mb-2">
-          7-Day Premium Subscription
-        </h1>
-
-        <p className="text-gray-600 mb-6">
-          Unlock all premium features for just ₹2 (7 days)
-        </p>
-
-        <div className="mb-6">
-          <span className="text-4xl font-extrabold text-black">₹2</span>
-          <span className="text-gray-500 text-lg"> / 7 days</span>
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md">
+        {/* Heading */}
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-4">
+            <Star className="w-3.5 h-3.5 fill-indigo-500" />
+            PREMIUM PLAN
+          </div>
+          <h1 className="text-2xl font-extrabold text-slate-900">Upgrade to Premium</h1>
+          <p className="text-slate-500 text-sm mt-1">Everything you need to grow your reviews</p>
         </div>
 
-        {waitingForPayment ? (
-          <div className="w-full py-4 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700">
-            <div className="flex items-center justify-center gap-3">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-indigo-600"></div>
-              <span className="font-semibold text-sm">
-                Waiting for payment confirmation...
-              </span>
-            </div>
-            <p className="text-xs mt-2">
-              Complete the payment. This page will auto-activate.
-            </p>
-          </div>
-        ) : (
-          <button
-            onClick={startSubscription}
-            disabled={loading}
-            className={`w-full py-3 rounded-xl text-white font-semibold transition ${
-              loading
-                ? "bg-indigo-400 cursor-not-allowed"
-                : "bg-indigo-600 hover:bg-indigo-700"
-            }`}
-          >
-            {loading ? "Opening Payment..." : "Start 7-Day Plan for ₹2"}
-          </button>
-        )}
+        {/* Card */}
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          {/* Price Header */}
+          <div className="bg-gradient-to-br from-indigo-600 to-violet-600 px-6 py-8 text-white text-center relative overflow-hidden">
+            {/* Decorative circles */}
+            <div className="absolute -top-6 -right-6 w-28 h-28 bg-white/10 rounded-full" />
+            <div className="absolute -bottom-8 -left-8 w-36 h-36 bg-white/5 rounded-full" />
 
-        {info && (
-          <p className="mt-4 text-indigo-600 text-sm font-medium">{info}</p>
-        )}
-        {error && <p className="mt-4 text-red-500 text-sm">{error}</p>}
+            <p className="text-indigo-200 text-xs font-semibold uppercase tracking-widest mb-3">7-Day Trial</p>
+            <div className="flex items-end justify-center gap-1 mb-2">
+              <span className="text-5xl font-extrabold">₹2</span>
+              <span className="text-indigo-200 text-base pb-1.5">/ 7 days</span>
+            </div>
+            <p className="text-indigo-200 text-xs">No hidden charges • Cancel anytime</p>
+          </div>
+
+          {/* Features */}
+          <div className="px-6 py-5 border-b border-slate-100">
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">What's included</p>
+            <ul className="space-y-3">
+              {features.map((f, i) => (
+                <li key={i} className="flex items-center gap-3 text-sm text-slate-700">
+                  <div className="w-7 h-7 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 shrink-0">
+                    {f.icon}
+                  </div>
+                  {f.text}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* CTA */}
+          <div className="px-6 py-6">
+            {waitingForPayment ? (
+              <div className="w-full py-4 rounded-xl bg-amber-50 border border-amber-200 text-center">
+                <div className="flex items-center justify-center gap-2 text-amber-700 font-semibold text-sm mb-1">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Waiting for payment...
+                </div>
+                <p className="text-amber-600 text-xs">Complete payment in the opened tab. This page will auto-activate.</p>
+              </div>
+            ) : (
+              <button
+                onClick={startSubscription}
+                disabled={loading}
+                className={`w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-md ${
+                  loading
+                    ? "bg-indigo-400 cursor-not-allowed"
+                    : "bg-indigo-600 hover:bg-indigo-700 hover:shadow-lg active:scale-95"
+                }`}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Opening Payment...
+                  </>
+                ) : (
+                  <>
+                    <Zap className="w-4 h-4" />
+                    Start 7-Day Plan — ₹2 Only
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            )}
+
+            {/* Info / Error */}
+            {info && (
+              <div className="mt-4 flex items-center gap-2 bg-indigo-50 border border-indigo-100 text-indigo-700 text-sm rounded-xl px-4 py-3">
+                <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+                {info}
+              </div>
+            )}
+            {error && (
+              <div className="mt-4 flex items-start gap-2 bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl px-4 py-3">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-medium">Payment Error</p>
+                  <p className="text-xs text-red-500 mt-0.5">{error}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Trust badge */}
+            <div className="mt-4 flex items-center justify-center gap-2 text-slate-400 text-xs">
+              <Shield className="w-3.5 h-3.5" />
+              Secured by Razorpay • 256-bit SSL encrypted
+            </div>
+          </div>
+        </div>
+
+        {/* Money back note */}
+        <p className="text-center text-xs text-slate-400 mt-4">
+          ✦ Instant activation after payment &nbsp;•&nbsp; No auto-renewal surprises
+        </p>
       </div>
     </div>
   );
