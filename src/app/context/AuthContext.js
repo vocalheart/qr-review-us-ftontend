@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import axios from "../llb/axios";
 
@@ -13,71 +13,131 @@ export function AuthProvider({ children }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Fetch user from backend cookies
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get("/auth/me", { withCredentials: true });
-        setUser(res.data.user);
-      } catch {
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // ================= FETCH USER FROM COOKIE =================
+  const fetchUser = useCallback(async () => {
+    try {
+      const res = await axios.get("/auth/me", {
+        withCredentials: true, // VERY IMPORTANT for cookies
+      });
 
-    fetchUser();
+      if (res?.data?.user) {
+        setUser(res.data.user);
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  // 🔥 Automatic Redirect Control System
+  // Run once on app load (refresh safe login)
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
+  // ================= SMART AUTO REDIRECT SYSTEM =================
   useEffect(() => {
     if (loading) return;
 
-    const publicRoutes = ["/", "/login", "/register"]; // unprotected pages
+    // Public pages (no login required)
+    const publicRoutes = ["/", "/login", "/register"];
 
-    // If user is logged in and tries to visit Home/login/register → redirect to dashboard
-    if (user && publicRoutes.includes(pathname)) {
+    const isPublicRoute = publicRoutes.includes(pathname);
+    const isDashboardRoute = pathname.startsWith("/dashboard");
+
+    //  If user is logged in & opens login/register/home → go to dashboard
+    if (user && isPublicRoute) {
       router.replace("/dashboard");
+      return;
     }
 
-    // If NOT logged in and tries to visit protected routes
-    if (!user && pathname.startsWith("/dashboard")) {
+    //  If user NOT logged in & tries to access dashboard → go to login
+    if (!user && isDashboardRoute) {
       router.replace("/login");
+      return;
     }
-  }, [user, loading, pathname]);
+  }, [user, loading, pathname, router]);
 
-
-  // Login
+  // ================= LOGIN FUNCTION =================
   const login = async (email, password) => {
     try {
+      setLoading(true);
+
       const res = await axios.post(
         "/login",
         { email, password },
         { withCredentials: true }
       );
 
+      // Set user instantly
       setUser(res.data.user);
-      router.push("/dashboard");
+
+      // Direct redirect to dashboard
+      router.replace("/dashboard");
+
       return res.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Login failed");
+      setUser(null);
+      throw new Error(
+        error.response?.data?.message || "Login failed"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Logout
+  // ================= LOGOUT FUNCTION =================
   const logout = async () => {
     try {
-      await axios.post("/logout", {}, { withCredentials: true });
+      setLoading(true);
+
+      await axios.post(
+        "/logout",
+        {},
+        { withCredentials: true }
+      );
+
+      // Clear user
       setUser(null);
-      router.push("/login");
+
+      // Redirect to login page
+      router.replace("/login");
     } catch (error) {
-      throw new Error(error.response?.data?.message || "Logout failed");
+      throw new Error(
+        error.response?.data?.message || "Logout failed"
+      );
+    } finally {
+      setLoading(false);
     }
+  };
+
+  // Optional: Manual refresh (useful after profile update)
+  const refreshUser = async () => {
+    setLoading(true);
+    await fetchUser();
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
-      {!loading && children}
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        logout,
+        refreshUser,
+        isAuthenticated: !!user,
+      }}
+    >
+      {/* Prevent UI flicker until auth check is done */}
+      {!loading ? (
+        children
+      ) : (
+        <div className="flex items-center justify-center min-h-screen">
+          <p className="text-lg font-semibold">Checking authentication...</p>
+        </div>
+      )}
     </AuthContext.Provider>
   );
 }
