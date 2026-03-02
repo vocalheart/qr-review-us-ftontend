@@ -142,7 +142,7 @@ export default function FeedbackLanding() {
           <div className="bg-white rounded-3xl shadow-2xl p-6 relative overflow-hidden">
             {logoUrl && (
               <div
-                className="absolute inset-0 bg-no-repeat bg-center bg-contain opacity-10 z-0"
+                className="absolute inset-0 bg-no-repeat bg-center bg-contain  z-0"
                 style={{
                   backgroundImage: `url(${logoUrl})`,
                 }}
