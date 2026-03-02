@@ -12,43 +12,45 @@ export default function ClientLayout({ children }) {
   const { user, loading } = useAuth();
   const pathname = usePathname();
 
-  //  Auth pages jahan Navbar & Footer nahi dikhana
-  const authRoutes = ["/login", "/signup", "/register"];
-  const isAuthPage = authRoutes.includes(pathname);
+  //  Pages jahan Navbar & Footer nahi dikhana (including nested routes)
+  const hideLayoutRoutes = ["/login", "/signup", "/register", "/form"];
 
-  // Jab auth loading ho tab flicker avoid kare
+  // Check for nested routes like /form/123, /form/abc
+  const isHiddenLayout = hideLayoutRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
   if (loading) return null;
 
   return (
     <>
-      {/* Sidebar only when user is logged in AND not on auth pages */}
-      {user && !isAuthPage && (
+      {/* Sidebar only when user is logged in AND not hidden pages */}
+      {user && !isHiddenLayout && (
         <Sidebar
           isCollapsed={isCollapsed}
           setIsCollapsed={setIsCollapsed}
         />
       )}
 
-      {/* Layout wrapper */}
       <div
         className={`flex flex-col min-h-screen transition-all duration-300 ease-in-out ${
-          user && !isAuthPage
+          user && !isHiddenLayout
             ? isCollapsed
               ? "md:ml-16"
               : "md:ml-64"
             : "ml-0"
         }`}
       >
-        {/* Hide Navbar on Login / Signup pages */}
-        {!isAuthPage && <Navbar />}
+        {/* Navbar Hide */}
+        {!isHiddenLayout && <Navbar />}
 
         {/* Main Content */}
         <main className="flex-grow p-4 md:p-6 overflow-x-hidden">
           {children}
         </main>
 
-        {/*  Hide Footer on Login / Signup pages */}
-        {!isAuthPage && <Footer />}
+        {/* Footer Hide */}
+        {!isHiddenLayout && <Footer />}
       </div>
     </>
   );
