@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://qrapi.vocalheart.com/api",
+  baseURL: "https://api.reviewbadhao.com/api",
   withCredentials: true, // IMPORTANT for cookies
 });
 

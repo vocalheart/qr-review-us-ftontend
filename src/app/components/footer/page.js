@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 "use client";
 
 import Link from "next/link";
@@ -12,19 +19,16 @@ export default function Footer() {
     { href: "/features", label: "Features" },
     { href: "/contact", label: "Contact" },
   ];
-
   const socialLinks = [
     { href: "https://facebook.com", icon: Facebook },
     { href: "https://twitter.com", icon: Twitter },
     { href: "https://instagram.com", icon: Instagram },
     { href: "https://linkedin.com", icon: Linkedin },
   ];
-
   return (
     <footer className="bg-gray-50 border-t border-gray-200 mt-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-
           {/* Logo & Description */}
           <div className="flex flex-col items-center md:items-start gap-2">
             <Link href="/" className="flex items-center gap-2">
@@ -34,7 +38,6 @@ export default function Footer() {
               A platform to leave reviews and generate QR codes easily.
             </p>
           </div>
-
           {/* Public Links */}
           <div className="flex flex-wrap justify-center md:justify-start gap-4">
             {publicLinks.map(({ href, label }) => (
@@ -63,11 +66,16 @@ export default function Footer() {
             ))}
           </div>
         </div>
-
         <div className="mt-6 text-center text-gray-500 text-xs">
           &copy; {new Date().getFullYear()} Reviwist. All rights reserved.
-        </div>
+        </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
       </div>
     </footer>
   );
 }
+
+
+
+
+
+
