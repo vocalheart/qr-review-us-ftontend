@@ -265,8 +265,8 @@ export default function SubscribePage() {
 
             {/* <p className="text-indigo-200 text-xs font-semibold uppercase tracking-widest mb-3">7-Day Trial</p> */}
             <div className="flex items-end justify-center gap-1 mb-2">
-              <span className="text-5xl font-extrabold">₹2</span>
-              <span className="text-indigo-200 text-base pb-1.5">/ 7 days</span>
+              <span className="text-5xl font-extrabold">₹2000</span>
+              <span className="text-indigo-200 text-base pb-1.5">/ 1 Year</span>
             </div>
             <p className="text-indigo-200 text-xs">No hidden charges • Cancel anytime</p>
           </div>
