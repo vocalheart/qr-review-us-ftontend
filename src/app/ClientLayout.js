@@ -45,7 +45,7 @@ export default function ClientLayout({ children }) {
         {!isHiddenLayout && <Navbar />}
 
         {/* Main Content */}
-        <main className="flex-grow p-4 md:p-6 overflow-x-hidden">
+        <main className="flex-grow overflow-x-hidden">
           {children}
         </main>
 

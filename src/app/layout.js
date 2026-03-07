@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="robots" content="index, follow" />
       </head>
-      <body className="min-h-screen bg-gray-50 text-gray-900">
+      <body className="bg-gray-50 text-gray-900">
         <AuthProvider>
           {/* ClientLayout handles all client-side state (sidebar collapse etc.) */}
           <ClientLayout>{children}</ClientLayout>
