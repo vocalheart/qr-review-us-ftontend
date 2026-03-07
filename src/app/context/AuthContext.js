@@ -19,7 +19,6 @@ export function AuthProvider({ children }) {
       const res = await axios.get("/auth/me", {
         withCredentials: true,
       });
-
       if (res?.data?.user) {
         setUser(res.data.user);
       } else {
@@ -61,17 +60,13 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       setLoading(true);
-
       const res = await axios.post(
         "/login",
         { email, password },
         { withCredentials: true }
       );
-
       setUser(res.data.user);
-
       router.replace("/dashboard");
-
       return res.data;
     } catch (error) {
       setUser(null);

@@ -264,7 +264,7 @@ export default function SubscribePage() {
             <div className="absolute -top-6 -right-6 w-28 h-28 bg-white/10 rounded-full" />
             <div className="absolute -bottom-8 -left-8 w-36 h-36 bg-white/5 rounded-full" />
 
-            <p className="text-indigo-200 text-xs font-semibold uppercase tracking-widest mb-3">7-Day Trial</p>
+            {/* <p className="text-indigo-200 text-xs font-semibold uppercase tracking-widest mb-3">7-Day Trial</p> */}
             <div className="flex items-end justify-center gap-1 mb-2">
               <span className="text-5xl font-extrabold">₹2</span>
               <span className="text-indigo-200 text-base pb-1.5">/ 7 days</span>
@@ -315,7 +315,7 @@ export default function SubscribePage() {
                 ) : (
                   <>
                     <Zap className="w-4 h-4" />
-                    Start 7-Day Plan — ₹2 Only
+                    Start 1 Year Plan — ₹2000 Only
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
