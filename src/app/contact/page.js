@@ -473,7 +473,6 @@ export default function Contact() {
               ))}
             </div>
           </div>
-
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button className="bg-yellow-400 text-indigo-900 px-10 py-5 rounded-full font-bold hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105 w-full sm:w-auto flex items-center justify-center gap-2" style={{fontSize:'12px'}}>
               Start Your 14-Day Free Trial
