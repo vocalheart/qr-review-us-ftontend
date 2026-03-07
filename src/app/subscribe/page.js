@@ -103,7 +103,6 @@ export default function SubscribePage() {
           return;
         }
       }
-
       const paymentWindow = window.open("", "_blank");
       if (!paymentWindow) {
         setError("Popup blocked! Please allow popups and try again.");
@@ -185,8 +184,8 @@ export default function SubscribePage() {
             <div className="bg-gradient-to-br from-emerald-500 to-teal-600 px-6 py-8 text-white">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <p className="text-emerald-100 text-xs font-medium uppercase tracking-wider mb-1">7-Day Premium</p>
-                  <p className="text-3xl font-extrabold">₹2 <span className="text-lg font-normal opacity-70">/ week</span></p>
+                  <p className="text-emerald-100 text-xs font-medium uppercase tracking-wider mb-1">1 Year Premium</p>
+                  <p className="text-3xl font-extrabold">₹2000 <span className="text-lg font-normal opacity-70">/ week</span></p>
                 </div>
                 <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
                   <CheckCircle className="w-7 h-7 text-white" />
