@@ -85,7 +85,6 @@ export default function SubscribePage() {
       setError("Payment verification timed out. Please refresh and try again.");
     }, 10 * 60 * 1000);
   };
-
   const startSubscription = async () => {
     try {
       setLoading(true);
@@ -109,7 +108,6 @@ export default function SubscribePage() {
         setLoading(false);
         return;
       }
-
       setInfo("Opening secure payment page...");
       const res = await axios.post("/create-subscription", {});
       if (res.data?.subscription?.short_url) {
@@ -126,7 +124,6 @@ export default function SubscribePage() {
       setLoading(false);
     }
   };
-
   // ── Features list ──
   const features = [
     { icon: <QrCode className="w-4 h-4" />, text: "Unlimited QR Code Generation" },
@@ -135,7 +132,6 @@ export default function SubscribePage() {
     { icon: <Shield className="w-4 h-4" />, text: "Smart Review Filtering" },
     { icon: <Zap className="w-4 h-4" />, text: "Instant Activation" },
   ];
-
   // ── Loading ──
   if (checkingStatus) {
     return (
@@ -148,8 +144,8 @@ export default function SubscribePage() {
         </div>
       </div>
     );
-  }
-
+  };
+  
   // ── ACTIVE SUBSCRIPTION ──
   if (subscriptionStatus?.status === "active") {
     const daysLeft = subscriptionStatus.daysRemaining || 0;
@@ -185,7 +181,7 @@ export default function SubscribePage() {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <p className="text-emerald-100 text-xs font-medium uppercase tracking-wider mb-1">1 Year Premium</p>
-                  <p className="text-3xl font-extrabold">₹2000 <span className="text-lg font-normal opacity-70">/ week</span></p>
+                  <p className="text-3xl font-extrabold">₹2499 <span className="text-lg font-normal opacity-70">/ Year</span></p>
                 </div>
                 <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
                   <CheckCircle className="w-7 h-7 text-white" />
@@ -218,7 +214,7 @@ export default function SubscribePage() {
               </div>
               <div className="flex items-center justify-between py-3">
                 <div className="flex items-center gap-2 text-slate-500 text-sm">
-                  <Clock className="w-4 h-4" />
+                   <Clock className="w-4 h-4" />
                   Expires
                 </div>
                 <span className="text-slate-800 font-semibold text-sm">{endDate}</span>
@@ -262,15 +258,13 @@ export default function SubscribePage() {
             {/* Decorative circles */}
             <div className="absolute -top-6 -right-6 w-28 h-28 bg-white/10 rounded-full" />
             <div className="absolute -bottom-8 -left-8 w-36 h-36 bg-white/5 rounded-full" />
-
             {/* <p className="text-indigo-200 text-xs font-semibold uppercase tracking-widest mb-3">7-Day Trial</p> */}
             <div className="flex items-end justify-center gap-1 mb-2">
-              <span className="text-5xl font-extrabold">₹2000</span>
+              <span className="text-5xl font-extrabold">₹2499</span>
               <span className="text-indigo-200 text-base pb-1.5">/ 1 Year</span>
             </div>
             <p className="text-indigo-200 text-xs">No hidden charges • Cancel anytime</p>
           </div>
-
           {/* Features */}
           <div className="px-6 py-5 border-b border-slate-100">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">What's included</p>
@@ -285,7 +279,6 @@ export default function SubscribePage() {
               ))}
             </ul>
           </div>
-
           {/* CTA */}
           <div className="px-6 py-6">
             {waitingForPayment ? (
@@ -314,13 +307,12 @@ export default function SubscribePage() {
                 ) : (
                   <>
                     <Zap className="w-4 h-4" />
-                    Start 1 Year Plan — ₹2000 Only
+                    Start 1 Year Plan — ₹2499 Only
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
               </button>
             )}
-
             {/* Info / Error */}
             {info && (
               <div className="mt-4 flex items-center gap-2 bg-indigo-50 border border-indigo-100 text-indigo-700 text-sm rounded-xl px-4 py-3">
