@@ -424,15 +424,15 @@ export default function Features() {
             </motion.a>
           </motion.div>
 
-          <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto text-black">
             {[
               { title: "Scan QR", desc: "Open camera app" },
               { title: "Rate Experience", desc: "Choose 1-5 stars" },
               { title: "Smart Redirect", desc: "See where you go!" },
             ].map((item, i) => (
-              <div key={i} className="bg-white bg-opacity-10 backdrop-blur-sm p-6 rounded-xl">
-                <h4 className="font-bold mb-2" style={{fontSize:'12px'}}>{item.title}</h4>
-                <p className="text-indigo-200" style={{fontSize:'12px'}}>{item.desc}</p>
+              <div key={i} className="bg-white bg-opacity-10 backdrop-blur-sm p-6 rounded-xl text-black">
+                <h4 className="font-bold mb-2 text-black" style={{fontSize:'12px'}}>{item.title}</h4>
+                <p className="text-black" style={{fontSize:'12px'}}>{item.desc}</p>
               </div>
             ))}
           </div>
@@ -469,11 +469,11 @@ export default function Features() {
           </motion.p>
 
           <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl p-8 mb-8 max-w-2xl mx-auto border border-white border-opacity-20">
-            <div className="grid sm:grid-cols-3 gap-6 text-center">
+            <div className="grid sm:grid-cols-3 gap-6 text-center text-black">
               {[["2,500+", "Happy Businesses"], ["50,000+", "Reviews Filtered"], ["4.8★", "Average Rating"]].map(([val, lbl], i) => (
                 <div key={i}>
-                  <div className="font-bold mb-1" style={{fontSize:'clamp(1.2rem,2.5vw,1.6rem)'}}>{val}</div>
-                  <div className="text-indigo-200" style={{fontSize:'12px'}}>{lbl}</div>
+                  <div className="font-bold mb-1 text-black" style={{fontSize:'clamp(1.2rem,2.5vw,1.6rem)'}}>{val}</div>
+                  <div className="text-black" style={{fontSize:'12px'}}>{lbl}</div>
                 </div>
               ))}
             </div>

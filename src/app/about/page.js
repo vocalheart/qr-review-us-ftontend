@@ -262,9 +262,9 @@ export default function About() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { name: "Rajesh Sharma", role: "CEO & Founder", bio: "Visionary entrepreneur with 15+ years in SaaS and customer experience management.", gradient: "from-indigo-100 to-indigo-200", iconColor: "text-indigo-600" },
-              { name: "Priya Gupta", role: "CTO", bio: "Tech innovator specializing in scalable web applications and AI-driven solutions.", gradient: "from-purple-100 to-purple-200", iconColor: "text-purple-600" },
-              { name: "Amit Patel", role: "Head of Product", bio: "Design thinker passionate about creating intuitive user experiences that drive results.", gradient: "from-yellow-100 to-yellow-200", iconColor: "text-yellow-600" },
+              { name: "Dhruv Saxena", role: "CEO & Founder", bio: "Visionary entrepreneur with 15+ years in SaaS and customer experience management.", gradient: "from-indigo-100 to-indigo-200", iconColor: "text-indigo-600" },
+              { name: "Anurag", role: "CTO", bio: "Tech innovator specializing in scalable web applications and AI-driven solutions.", gradient: "from-purple-100 to-purple-200", iconColor: "text-purple-600" },
+              { name: "Raj", role: "Head of Product", bio: "Design thinker passionate about creating intuitive user experiences that drive results.", gradient: "from-yellow-100 to-yellow-200", iconColor: "text-yellow-600" },
             ].map((member, index) => (
               <motion.div
                 key={index}
@@ -420,11 +420,11 @@ export default function About() {
             </p>
 
             <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl p-6 mb-8 max-w-lg mx-auto border border-white border-opacity-20">
-              <div className="grid grid-cols-3 gap-4 text-center">
+              <div className="grid grid-cols-3 gap-4 text-center text-black">
                 {[["2,500+", "Happy Businesses"], ["50,000+", "Reviews Filtered"], ["4.8★", "Avg Rating"]].map(([val, lbl], i) => (
                   <div key={i}>
-                    <div className="font-bold" style={{fontSize:'clamp(1rem,2.5vw,1.4rem)'}}>{val}</div>
-                    <div className="text-indigo-200" style={{fontSize:'12px'}}>{lbl}</div>
+                    <div className="font-bold text-black" style={{fontSize:'clamp(1rem,2.5vw,1.4rem)'}}>{val}</div>
+                    <div className="text-black" style={{fontSize:'12px'}}>{lbl}</div>
                   </div>
                 ))}
               </div>

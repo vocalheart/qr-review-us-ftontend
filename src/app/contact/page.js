@@ -464,11 +464,11 @@ export default function Contact() {
           </p>
 
           <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl p-6 mb-8 max-w-lg mx-auto border border-white border-opacity-20">
-            <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="grid grid-cols-3 gap-4 text-center text-black">
               {[["2,500+", "Happy Businesses"], ["50,000+", "Reviews Filtered"], ["4.8★", "Avg Rating"]].map(([val, lbl], i) => (
                 <div key={i}>
-                  <div className="font-bold" style={{fontSize:'clamp(1rem,2.5vw,1.4rem)'}}>{val}</div>
-                  <div className="text-indigo-200" style={{fontSize:'12px'}}>{lbl}</div>
+                  <div className="font-bold text-black" style={{fontSize:'clamp(1rem,2.5vw,1.4rem)'}}>{val}</div>
+                  <div className="text-black" style={{fontSize:'12px'}}>{lbl}</div>
                 </div>
               ))}
             </div>
