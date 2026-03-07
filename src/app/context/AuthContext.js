@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
   const fetchUser = useCallback(async () => {
     try {
       const res = await axios.get("/auth/me", {
-        withCredentials: true, // VERY IMPORTANT for cookies
+        withCredentials: true,
       });
 
       if (res?.data?.user) {
@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  // Run once on app load (refresh safe login)
+  // Run once on app load
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
@@ -41,19 +41,16 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (loading) return;
 
-    // Public pages (no login required)
     const publicRoutes = ["/", "/login", "/register"];
 
     const isPublicRoute = publicRoutes.includes(pathname);
     const isDashboardRoute = pathname.startsWith("/dashboard");
 
-    //  If user is logged in & opens login/register/home → go to dashboard
     if (user && isPublicRoute) {
       router.replace("/dashboard");
       return;
     }
 
-    //  If user NOT logged in & tries to access dashboard → go to login
     if (!user && isDashboardRoute) {
       router.replace("/login");
       return;
@@ -71,10 +68,8 @@ export function AuthProvider({ children }) {
         { withCredentials: true }
       );
 
-      // Set user instantly
       setUser(res.data.user);
 
-      // Direct redirect to dashboard
       router.replace("/dashboard");
 
       return res.data;
@@ -99,10 +94,8 @@ export function AuthProvider({ children }) {
         { withCredentials: true }
       );
 
-      // Clear user
       setUser(null);
 
-      // Redirect to login page
       router.replace("/login");
     } catch (error) {
       throw new Error(
@@ -113,7 +106,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Optional: Manual refresh (useful after profile update)
   const refreshUser = async () => {
     setLoading(true);
     await fetchUser();
@@ -130,12 +122,18 @@ export function AuthProvider({ children }) {
         isAuthenticated: !!user,
       }}
     >
-      {/* Prevent UI flicker until auth check is done */}
       {!loading ? (
         children
       ) : (
         <div className="flex items-center justify-center min-h-screen">
-          <p className="text-lg font-semibold">Checking authentication...</p>
+          <div className="flex items-center space-x-2 text-indigo-600 text-lg font-semibold">
+      
+            <span className="flex space-x-1">
+              <span className="w-2 h-2 bg-indigo-600 rounded-full animate-bounce"></span>
+              <span className="w-2 h-2 bg-indigo-600 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+               <span className="w-2 h-2 bg-indigo-600 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+            </span>
+          </div>
         </div>
       )}
     </AuthContext.Provider>

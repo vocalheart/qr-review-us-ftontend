@@ -79,7 +79,6 @@ export default function Navbar() {
                         Signed in
                       </p>
                     </div>
-
                     {/* Links */}
                     <Link
                       href="/profile"
