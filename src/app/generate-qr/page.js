@@ -87,7 +87,6 @@ function QRContent() {
   // Design state
   const [design, setDesign] = useState({ ...DEFAULTS });
   const setD = (key, val) => setDesign((p) => ({ ...p, [key]: val }));
-
   /* ── fetch ── */
   const fetchFormSettings = async () => {
     try {
@@ -110,9 +109,7 @@ function QRContent() {
     } catch { setError("Failed to load QR code."); }
     finally { setFetching(false); }
   };
-
   useEffect(() => { fetchFormSettings(); fetchQR(); }, []);
-
   /* ── generate / delete ── */
   const generateQR = async () => {
     setLoadingQR(true); setError("");
@@ -123,7 +120,6 @@ function QRContent() {
     } catch { setError("Something went wrong."); }
     finally { setLoadingQR(false); }
   };
-
   const deleteQR = async () => {
     setLoadingQR(true); setError("");
     try {
@@ -133,7 +129,6 @@ function QRContent() {
     } catch { setError("Failed to delete QR."); }
     finally { setLoadingQR(false); }
   };
-
   /* ── save form settings ── */
   const handleSaveSettings = async () => {
     if (!customURL.trim()) { setSettingsError("Please enter a redirect URL"); return; }
@@ -153,7 +148,6 @@ function QRContent() {
     } catch (err) { setSettingsError(err.response?.data?.message || "Something went wrong"); }
     finally { setSettingsLoading(false); }
   };
-
   const handleDeleteSettings = async () => {
     setSettingsLoading(true);
     try {
@@ -163,14 +157,12 @@ function QRContent() {
     } catch (err) { setSettingsError(err.response?.data?.message || "Error"); }
     finally { setSettingsLoading(false); }
   };
-
   /* ── template select ── */
   const handleTemplateSelect = (index) => {
     setSelectedTemplate(index);
     const t = TEMPLATES[index];
     setDesign({ ...DEFAULTS, ...t });
   };
-
   /* ── copy link ── */
   const copyLink = async () => {
     if (!qr?.data) return;

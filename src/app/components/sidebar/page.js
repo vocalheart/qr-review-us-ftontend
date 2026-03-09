@@ -120,7 +120,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
         <div className="flex items-center justify-between px-4 h-14 sm:h-16 border-b border-gray-100">
           <Link href="/" className="flex items-center gap-2">
             <Image src={logo} alt="Logo" width={40} height={40} className="w-9 h-9" />
-            <span className="font-bold text-gray-900 text-base">Reviwist</span>
+            <span className="font-bold text-gray-900 text-base">Reviewbadhao</span>
           </Link>
           <button
             onClick={() => setIsMobileOpen(false)}
