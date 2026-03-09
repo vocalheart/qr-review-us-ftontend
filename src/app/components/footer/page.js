@@ -10,13 +10,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
-import logo from "../../../../public/reviwist.png";
-
+import logo from "../../../../public/ReviewBadhaoLogo.png";
 export default function Footer() {
   const publicLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
-    { href: "/features", label: "Features" },
+    { href: "/features", label: "Features"},
     { href: "/contact", label: "Contact" },
   ];
   const socialLinks = [
@@ -67,7 +66,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-6 text-center text-gray-500 text-xs">
-          &copy; {new Date().getFullYear()} Reviwist. All rights reserved.
+          &copy; {new Date().getFullYear()} ReviewBadhao. All rights reserved.
         </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
       </div>
     </footer>

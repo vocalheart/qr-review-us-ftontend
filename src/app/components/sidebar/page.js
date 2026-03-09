@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import logo from "../../../../public/qrLogo.jpeg";
+import logo from "../../../../public/ReviewBadhaoLogo.png";
 import {
   LayoutDashboard,
   QrCode,
@@ -69,11 +69,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
             title={collapsed ? item.name : undefined}
             className={`flex items-center gap-3 py-2.5 rounded-xl transition-all duration-200 group relative
               ${collapsed ? "justify-center px-2" : "px-3"}
-              ${isActive
-                ? "bg-indigo-50 text-indigo-700 font-semibold shadow-sm"
-                : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-              }`}
-          >
+              ${isActive ? "bg-indigo-50 text-indigo-700 font-semibold shadow-sm": "text-gray-600 hover:bg-gray-100 hover:text-gray-900"}`}>
             <Icon
               size={20}
               className={`shrink-0 ${isActive ? "text-indigo-600" : "text-gray-500 group-hover:text-gray-700"}`}
@@ -81,7 +77,6 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
             {!collapsed && (
               <span className="text-sm whitespace-nowrap">{item.name}</span>
             )}
-
             {/* Tooltip when collapsed */}
             {collapsed && (
               <span className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap transition-opacity z-50">
@@ -93,7 +88,6 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
       })}
     </nav>
   );
-
   return (
     <>
       {/* ════════════════════════════════════════
@@ -155,7 +149,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
           {!isCollapsed && (
             <Link href="/" className="flex items-center gap-2 overflow-hidden">
               <Image src={logo} alt="Logo" width={40} height={40} className="w-9 h-9 shrink-0" />
-              <span className="font-bold text-gray-900 text-base whitespace-nowrap">Reviwist</span>
+              <span className="font-bold text-gray-900 text-base whitespace-nowrap">Reviewbadhao</span>
             </Link>
           )}
           <button

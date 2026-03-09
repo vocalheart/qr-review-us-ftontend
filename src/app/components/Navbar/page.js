@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "../../context/AuthContext";
 import { useState, useRef, useEffect } from "react";
-import logo from "../../../../public/qrLogo.jpeg";
+import logo from "../../../../public/ReviewBadhaoLogo.png";
 import { ChevronDown, LogOut, User, History, CheckCircle } from "lucide-react";
 
 export default function Navbar() {

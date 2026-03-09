@@ -202,7 +202,6 @@ export default function SubscribePage() {
                 </div>
               </div>
             </div>
-
             {/* Details */}
             <div className="px-6 py-5 space-y-3">
               <div className="flex items-center justify-between py-3 border-b border-slate-100">
