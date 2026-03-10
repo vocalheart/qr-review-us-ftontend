@@ -11,7 +11,7 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-
+  
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -26,24 +26,19 @@ export default function Navbar() {
     await logout();
     setIsDropdownOpen(false);
   };
-
   return (
     <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 shadow-sm" style={{fontSize:'14px'}}>
       <div className="px-3 sm:px-4 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16">
-
           {/* LOGO — hidden on mobile, visible on desktop */}
           <Link
             href="/"
             className="hidden md:flex items-center gap-2 font-bold text-indigo-600 hover:text-indigo-700 transition-colors"
-            style={{fontSize:'14px'}}
-          >
+            style={{fontSize:'14px'}}>
             <Image src={logo} alt="Logo" width={56} height={56} className="w-12 h-12 hidden" />
           </Link>
-
           {/* Mobile: spacer so profile stays right */}
           <div className="md:hidden flex-1" />
-
           {/* RIGHT SIDE */}
           <div className="flex items-center gap-2">
             {user ? (
@@ -52,8 +47,7 @@ export default function Navbar() {
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="flex items-center gap-2 px-2.5 py-2 rounded-xl hover:bg-gray-50 transition-all"
-                  aria-label="User menu"
-                >
+                  aria-label="User menu">
                   <div
                     className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-semibold shadow-md"
                     style={{fontSize:'14px'}}
@@ -66,7 +60,6 @@ export default function Navbar() {
                     }`}
                   />
                 </button>
-
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden z-50">
                     {/* User Info */}
@@ -89,7 +82,6 @@ export default function Navbar() {
                       <User className="w-4 h-4 text-gray-500 flex-shrink-0" />
                       My Profile
                     </Link>
-
                     <Link
                       href="/subscription-history"
                       onClick={() => setIsDropdownOpen(false)}
@@ -99,7 +91,6 @@ export default function Navbar() {
                       <History className="w-4 h-4 text-gray-500 flex-shrink-0" />
                       Subscription History
                     </Link>
-
                     <button
                       onClick={handleLogout}
                       className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 text-red-600 w-full text-left transition-colors"
@@ -117,8 +108,7 @@ export default function Navbar() {
                 <Link
                   href="/login"
                   className="text-gray-700 hover:text-indigo-600 font-medium px-4 py-2 rounded-xl transition-colors"
-                  style={{fontSize:'14px'}}
-                >
+                  style={{fontSize:'14px'}}>
                   Login
                 </Link>
                 <Link
