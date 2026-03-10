@@ -431,16 +431,7 @@ export default function About() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link
-                href="/signup"
-                className="inline-flex items-center justify-center gap-2 bg-yellow-400 text-indigo-900 px-10 py-5 rounded-full font-bold hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105 w-full sm:w-auto"
-                style={{fontSize:'12px'}}
-              >
-                Start Your 14-Day Free Trial
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
-                </svg>
-              </Link>
+        
               <a
                 href="tel:9425305534"
                 className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-10 py-5 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto"

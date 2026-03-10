@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 
 function Countdown({ minutes = 5 }) {
-
   const [time, setTime] = useState(minutes * 60);
-  
   useEffect(() => {
     const timer = setInterval(() => {
       setTime((t) => {
@@ -22,7 +20,6 @@ function Countdown({ minutes = 5 }) {
       {(time % 60).toString().padStart(2, "0")}
     </p>
   );
-}
-
+};
 
 export default Countdown
