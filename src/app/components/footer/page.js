@@ -85,8 +85,8 @@ export default function Footer() {
             </div>
             <div className="text-center md:text-left">
               <p className="text-gray-800 font-semibold text-sm">Contact Us</p>
-              <a href="tel:9425305534" className="text-indigo-600 hover:text-indigo-700 text-sm font-medium">
-                94253 05534
+              <a href="tel:07554045078" className="text-indigo-600 hover:text-indigo-700 text-sm font-medium">
+                07554045078
               </a>
             </div>
           </div>

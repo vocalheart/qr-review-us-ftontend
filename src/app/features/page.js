@@ -66,20 +66,9 @@ export default function Features() {
             transition={{ delay: 0.8, duration: 1 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8"
           >
+           
             <motion.a
-              href="#get-started"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-400 text-indigo-900 font-bold rounded-full shadow-lg hover:bg-yellow-300 transition-all w-full sm:w-auto text-center"
-              style={{fontSize:'12px'}}
-            >
-              Start Free Trial
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
-              </svg>
-            </motion.a>
-            <motion.a
-              href="tel:9425305534"
+              href="tel:07554045078"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="inline-flex items-center gap-2 px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto text-center"
@@ -93,7 +82,7 @@ export default function Features() {
           </motion.div>
 
           <div className="mt-12 flex flex-wrap justify-center gap-6" style={{fontSize:'12px'}}>
-            {["No Credit Card Required", "14-Day Free Trial", "Setup in 5 Minutes"].map((text, i) => (
+            {[ "Setup in 5 Minutes"].map((text, i) => (
               <div key={i} className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
@@ -400,19 +389,9 @@ export default function Features() {
             viewport={{ once: true }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
           >
+            
             <motion.a
-              href="#get-started"
-              whileHover={{ scale: 1.05 }}
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 text-indigo-900 font-bold rounded-full shadow-lg hover:bg-yellow-300 transition-all w-full sm:w-auto"
-              style={{fontSize:'12px'}}
-            >
-              Start Free Trial
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
-              </svg>
-            </motion.a>
-            <motion.a
-              href="tel:9425305534"
+              href="tel:07554045078"
               whileHover={{ scale: 1.05 }}
               className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto"
               style={{fontSize:'12px'}}
@@ -420,7 +399,7 @@ export default function Features() {
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
               </svg>
-              Call Demo: 94253 05534
+              Call Demo: 07554045078
             </motion.a>
           </motion.div>
 
@@ -487,16 +466,16 @@ export default function Features() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             
-            <a href="tel:9425305534" className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-10 py-5 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto" style={{fontSize:'12px'}}>
+            <a href="tel:07554045078" className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-10 py-5 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto" style={{fontSize:'12px'}}>
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
               </svg>
-              Call: 94253 05534
+              Call: 07554045078
             </a>
           </motion.div>
 
           <div className="mt-8 flex flex-wrap justify-center gap-6" style={{fontSize:'12px'}}>
-            {["No Credit Card Required", "Setup in 5 Minutes", "Cancel Anytime"].map((text, i) => (
+            {["Setup in 5 Minutes", ].map((text, i) => (
               <div key={i} className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>

@@ -1,388 +1,525 @@
 "use client";
+import { useState } from "react";
+
 export default function Home() {
+  const [openFaq, setOpenFaq] = useState(null);
+
+  // Icon Components
+  const Icons = {
+    QR: () => (
+      <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+      </svg>
+    ),
+    Star: () => (
+      <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+      </svg>
+    ),
+    Filter: () => (
+      <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+      </svg>
+    ),
+    Check: () => (
+      <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="currentColor" viewBox="0 0 20 20">
+        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+      </svg>
+    ),
+    Lock: () => (
+      <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+    ),
+    Link: () => (
+      <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.658 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+      </svg>
+    ),
+    Bell: () => (
+      <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+      </svg>
+    ),
+    Building: () => (
+      <svg className="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+      </svg>
+    ),
+    PhoneCall: () => (
+      <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+      </svg>
+    ),
+    ChevronDown: () => (
+      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"/>
+      </svg>
+    ),
+  };
+
   return (
     <>
-      <style jsx global>{`
-        html, body {
-          font-size: 12px;
-        }
-        * {
-          font-size: inherit;
-        }`}
-      </style>
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col justify-center items-center text-center bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 text-white overflow-hidden px-4 sm:px-6">
+      {/* ==================== HERO SECTION ==================== */}
+      <section className="relative min-h-screen flex flex-col justify-center items-center text-center bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 text-white overflow-hidden px-4 sm:px-6 lg:px-8">
+        {/* Background Blobs */}
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-1/2 -left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
           <div className="absolute top-1/3 -right-1/4 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-700"></div>
         </div>
-        <div className="max-w-6xl mx-auto z-10">
-          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 text-black bg-white bg-opacity-20 backdrop-blur-sm rounded-full font-semibold" style={{fontSize:'12px'}}>
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+
+        <div className="max-w-7xl mx-auto z-10 py-8 sm:py-12 lg:py-16">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 mb-6 sm:mb-8 px-4 sm:px-6 py-2 sm:py-3 text-white bg-white bg-opacity-20 backdrop-blur-sm rounded-full font-semibold text-xs sm:text-sm">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
             </svg>
-            <span>Smart Review Collection System</span>
+            <span className="text-black">Smart Review Collection System</span>
           </div>
-         
-          <h1 className="font-extrabold mb-6 leading-tight" style={{fontSize:'clamp(1.8rem, 5vw, 4rem)'}}>
-            Boost Your <span className="text-yellow-300">Google Rating</span><br />
-            Filter Out Negative Reviews
+
+          {/* Headline */}
+          <h1 className="font-bold mb-4 sm:mb-6 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-white" style={{fontSize:'clamp(1.75rem, 6vw, 3.5rem)', lineHeight: '1.2'}}>
+            Boost Your Google Rating & Filter Negative Reviews
           </h1>
-          <p className="text-indigo-100 max-w-4xl mx-auto leading-relaxed mb-8 px-2" style={{fontSize:'clamp(0.85rem, 2vw, 1.1rem)'}}>
-            Only positive reviews reach Google. Negative feedback stays private.
-            Smart QR-based review filtering system for restaurants, shops, clinics & local businesses.
+
+          {/* Subheading */}
+          <p className="text-indigo-100 max-w-4xl mx-auto leading-relaxed mb-8 sm:mb-10 px-2" style={{fontSize:'clamp(0.9rem, 2.5vw, 1.1rem)'}}>
+            Only positive reviews reach Google. Negative feedback stays private. Smart QR-based review filtering for restaurants, shops, clinics & local businesses.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mt-8 sm:mt-10">
             <a
               href="#how-it-works"
-              className="px-8 py-4 bg-yellow-400 text-indigo-900 font-bold rounded-full shadow-lg hover:bg-yellow-300 transition-all w-full sm:w-auto text-center transform hover:scale-105"
-              style={{fontSize:'12px'}}
+              className="px-6 sm:px-8 py-3 sm:py-4 bg-yellow-400 text-indigo-900 font-bold rounded-full shadow-lg hover:bg-yellow-300 transition-all w-full sm:w-auto text-center transform hover:scale-105 text-sm sm:text-base"
             >
               See How It Works
             </a>
             <a
               href="tel:9425305534"
-              className="px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto text-center"
-              style={{fontSize:'12px'}}
+              className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto text-center text-sm sm:text-base"
             >
-              Try Demo QR Call
+              Try Demo Call
             </a>
           </div>
-          <div className="mt-12 flex flex-wrap justify-center gap-6" style={{fontSize:'12px'}}>
+
+          {/* Trust Badges */}
+          <div className="mt-10 sm:mt-14 flex flex-wrap justify-center gap-4 sm:gap-8 text-xs sm:text-sm px-4">
             <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
               </svg>
-              <span>No Credit Card Required</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-              </svg>
-              <span>14-Day Free Trial</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-              </svg>
-              <span>Setup in 5 Minutes</span>
+              <span>Setup in 5 Min</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-12 sm:py-16 bg-white border-b">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-            <div className="p-4 hover:transform hover:scale-105 transition-transform">
-              <div className="w-16 h-16 mx-auto mb-3 bg-yellow-100 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                </svg>
+      {/* ==================== STATS SECTION ==================== */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {[
+              { stat: "95%", label: "Positive Reviews", Icon: Icons.Check, bgColor: "bg-yellow-100", textColor: "text-yellow-600" },
+              { stat: "4.8★", label: "Average Rating", Icon: Icons.Star, bgColor: "bg-green-100", textColor: "text-green-600" },
+              { stat: "300%", label: "More 5-Stars", Icon: Icons.Check, bgColor: "bg-blue-100", textColor: "text-blue-600" },
+              { stat: "100%", label: "Filtered Negatives", Icon: Icons.Filter, bgColor: "bg-purple-100", textColor: "text-purple-600" },
+            ].map((item, i) => (
+              <div key={i} className="p-4 sm:p-6 hover:transform hover:scale-105 transition-transform text-center">
+                <div className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 ${item.bgColor} rounded-full flex items-center justify-center`}>
+                  <div className={item.textColor}>
+                    <item.Icon />
+                  </div>
+                </div>
+                <div className="font-bold text-indigo-600 mb-2" style={{fontSize:'clamp(1.2rem, 2.5vw, 1.8rem)'}}>
+                  {item.stat}
+                </div>
+                <div className="text-gray-600 text-xs sm:text-sm">{item.label}</div>
               </div>
-              <div className="font-bold text-indigo-600 mb-2" style={{fontSize:'clamp(1.4rem, 3vw, 2rem)'}}>95%</div>
-              <div className="text-gray-600" style={{fontSize:'12px'}}>Positive Reviews on Google</div>
-            </div>
-            <div className="p-4 hover:transform hover:scale-105 transition-transform">
-              <div className="w-16 h-16 mx-auto mb-3 bg-green-100 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd"/>
-                </svg>
-              </div>
-              <div className="font-bold text-indigo-600 mb-2" style={{fontSize:'clamp(1.4rem, 3vw, 2rem)'}}>4.8★</div>
-              <div className="text-gray-600" style={{fontSize:'12px'}}>Average Rating Achieved</div>
-            </div>
-            <div className="p-4 hover:transform hover:scale-105 transition-transform">
-              <div className="w-16 h-16 mx-auto mb-3 bg-blue-100 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                </svg>
-              </div>
-              <div className="font-bold text-indigo-600 mb-2" style={{fontSize:'clamp(1.4rem, 3vw, 2rem)'}}>300%</div>
-              <div className="text-gray-600" style={{fontSize:'12px'}}>More 5-Star Reviews</div>
-            </div>
-            <div className="p-4 hover:transform hover:scale-105 transition-transform">
-              <div className="w-16 h-16 mx-auto mb-3 bg-purple-100 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                </svg>
-              </div>
-              <div className="font-bold text-indigo-600 mb-2" style={{fontSize:'clamp(1.4rem, 3vw, 2rem)'}}>100%</div>
-              <div className="text-gray-600" style={{fontSize:'12px'}}>Negative Reviews Filtered</div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Problem-Solution Section */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="bg-red-50 border-l-4 border-red-500 p-8 rounded-lg">
-              <h3 className="font-bold text-red-800 mb-4 flex items-center gap-2" style={{fontSize:'clamp(1rem, 2vw, 1.3rem)'}}>
-                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+      {/* ==================== PROBLEM-SOLUTION SECTION ==================== */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
+            {/* Problem */}
+            <div className="bg-red-50 border-l-4 border-red-500 p-6 sm:p-8 rounded-lg">
+              <h3 className="font-bold text-red-800 mb-4 sm:mb-6 flex items-center gap-2" style={{fontSize:'clamp(1rem, 2vw, 1.2rem)'}}>
+                <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/>
                 </svg>
                 Traditional Way Problem
               </h3>
-              <ul className="space-y-4 text-gray-700" style={{fontSize:'12px'}}>
-                <li className="flex items-start gap-3"><span className="text-red-500 mt-1">•</span><span>Unhappy customers directly post 1-2 star reviews on Google</span></li>
-                <li className="flex items-start gap-3"><span className="text-red-500 mt-1">•</span><span>Your business rating drops publicly</span></li>
-                <li className="flex items-start gap-3"><span className="text-red-500 mt-1">•</span><span>No chance to fix issues before damage is done</span></li>
-                <li className="flex items-start gap-3"><span className="text-red-500 mt-1">•</span><span>Happy customers often forget to leave reviews</span></li>
-                <li className="flex items-start gap-3"><span className="text-red-500 mt-1">•</span><span>Difficult to manage and respond to all feedback</span></li>
+              <ul className="space-y-3 sm:space-y-4 text-gray-700 text-xs sm:text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-red-500 mt-1 flex-shrink-0">•</span>
+                  <span>Unhappy customers post 1-2 star reviews directly on Google</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-red-500 mt-1 flex-shrink-0">•</span>
+                  <span>Your rating drops publicly & damages reputation</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-red-500 mt-1 flex-shrink-0">•</span>
+                  <span>No chance to fix issues before damage is done</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-red-500 mt-1 flex-shrink-0">•</span>
+                  <span>Happy customers forget to leave reviews</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-red-500 mt-1 flex-shrink-0">•</span>
+                  <span>Difficult to manage all feedback effectively</span>
+                </li>
               </ul>
             </div>
-            <div className="bg-green-50 border-l-4 border-green-500 p-8 rounded-lg">
-              <h3 className="font-bold text-green-800 mb-4 flex items-center gap-2" style={{fontSize:'clamp(1rem, 2vw, 1.3rem)'}}>
-                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+
+            {/* Solution */}
+            <div className="bg-green-50 border-l-4 border-green-500 p-6 sm:p-8 rounded-lg">
+              <h3 className="font-bold text-green-800 mb-4 sm:mb-6 flex items-center gap-2" style={{fontSize:'clamp(1rem, 2vw, 1.2rem)'}}>
+                <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                 </svg>
                 Smart System Solution
               </h3>
-              <ul className="space-y-4 text-gray-700" style={{fontSize:'12px'}}>
-                <li className="flex items-start gap-3"><span className="text-green-500 mt-1">•</span><span><strong>4-5 stars?</strong> Auto-redirect to Google (Public Review)</span></li>
-                <li className="flex items-start gap-3"><span className="text-green-500 mt-1">•</span><span><strong>1-3 stars?</strong> Stays private in your dashboard</span></li>
-                <li className="flex items-start gap-3"><span className="text-green-500 mt-1">•</span><span>Fix issues before they harm your reputation</span></li>
-                <li className="flex items-start gap-3"><span className="text-green-500 mt-1">•</span><span>Easy QR scan encourages more positive reviews</span></li>
-                <li className="flex items-start gap-3"><span className="text-green-500 mt-1">•</span><span>Centralized dashboard for all feedback management</span></li>
+              <ul className="space-y-3 sm:space-y-4 text-gray-700 text-xs sm:text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500 mt-1 flex-shrink-0">✓</span>
+                  <span><strong>4-5 stars?</strong> Auto-redirect to Google (Public)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500 mt-1 flex-shrink-0">✓</span>
+                  <span><strong>1-3 stars?</strong> Stays private in your dashboard</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500 mt-1 flex-shrink-0">✓</span>
+                  <span>Fix issues before they harm your reputation</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500 mt-1 flex-shrink-0">✓</span>
+                  <span>Easy QR scan encourages positive reviews</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500 mt-1 flex-shrink-0">✓</span>
+                  <span>Centralized dashboard for all feedback</span>
+                </li>
               </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section id="how-it-works" className="py-16 sm:py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 sm:mb-16">
+      {/* ==================== HOW IT WORKS ==================== */}
+      <section id="how-it-works" className="py-12 sm:py-16 lg:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Heading */}
+          <div className="text-center mb-10 sm:mb-14">
             <h2 className="font-bold text-gray-800 mb-4" style={{fontSize:'clamp(1.4rem, 4vw, 2.5rem)'}}>
               How Smart Review Filtering Works
             </h2>
-            <p className="text-gray-600 max-w-3xl mx-auto" style={{fontSize:'12px'}}>
+            <p className="text-gray-600 max-w-3xl mx-auto text-xs sm:text-sm">
               Simple 4-step process to protect your reputation and boost positive reviews
             </p>
           </div>
-          <div className="relative">
-            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-indigo-200 -translate-y-1/2 -z-10"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {[
-                { num: "01", icon: <path fillRule="evenodd" d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 14a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"/>, bg: "bg-indigo-100", color: "text-indigo-600", title: "Customer Scans QR", desc: "Place QR codes at tables, counter, or on bills. Customer scans with phone camera." },
-                { num: "02", icon: <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>, bg: "bg-yellow-100", color: "text-yellow-600", title: "Rates Experience", desc: "Smart feedback form opens. Customer selects star rating (1-5 stars)." },
-                { num: "03", icon: <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>, bg: "bg-purple-100", color: "text-purple-600", title: "Smart Filtering", desc: "4-5 stars → Google Review. 1-3 stars → Private Dashboard. Auto-magic!" },
-                { num: "04", icon: <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>, bg: "bg-green-100", color: "text-green-600", title: "You Take Action", desc: "Monitor dashboard, fix issues privately, and watch your Google rating soar." },
-              ].map((step, i) => (
-                <div key={i} className="relative bg-white p-6 rounded-2xl shadow-lg border-2 border-indigo-100 hover:border-indigo-300 transition-all hover:transform hover:-translate-y-2">
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold shadow-lg" style={{fontSize:'12px'}}>{step.num}</div>
-                  <div className={`w-20 h-20 mx-auto mt-6 mb-4 ${step.bg} rounded-full flex items-center justify-center`}>
-                    <svg className={`w-10 h-10 ${step.color}`} fill="currentColor" viewBox="0 0 20 20">{step.icon}</svg>
-                  </div>
-                  <h3 className="font-bold text-gray-800 mb-3 text-center" style={{fontSize:'clamp(0.85rem, 1.5vw, 1rem)'}}>{step.title}</h3>
-                  <p className="text-gray-600 leading-relaxed text-center" style={{fontSize:'12px'}}>{step.desc}</p>
+
+          {/* Steps */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {[
+              { 
+                num: "01", 
+                title: "Customer Scans QR", 
+                desc: "Place QR codes at tables or counter. Customer scans with phone camera.", 
+                Icon: Icons.QR,
+                bgColor: "bg-indigo-100",
+                textColor: "text-indigo-600"
+              },
+              { 
+                num: "02", 
+                title: "Rates Experience", 
+                desc: "Smart feedback form opens. Customer selects 1-5 star rating.", 
+                Icon: Icons.Star,
+                bgColor: "bg-yellow-100",
+                textColor: "text-yellow-600"
+              },
+              { 
+                num: "03", 
+                title: "Smart Filtering", 
+                desc: "4-5 stars → Google. 1-3 stars → Private Dashboard.", 
+                Icon: Icons.Filter,
+                bgColor: "bg-purple-100",
+                textColor: "text-purple-600"
+              },
+              { 
+                num: "04", 
+                title: "You Take Action", 
+                desc: "Monitor dashboard, fix issues privately, boost your rating.", 
+                Icon: Icons.Check,
+                bgColor: "bg-green-100",
+                textColor: "text-green-600"
+              },
+            ].map((step, i) => (
+              <div key={i} className="relative bg-white p-6 sm:p-7 rounded-2xl shadow-lg border-2 border-gray-100 hover:border-indigo-300 transition-all hover:shadow-xl hover:-translate-y-2">
+                {/* Number Badge */}
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-10 sm:w-12 sm:h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold shadow-lg text-xs sm:text-sm">
+                  {step.num}
                 </div>
-              ))}
-            </div>
+
+                {/* Icon */}
+                <div className={`w-16 h-16 sm:w-20 sm:h-20 mx-auto mt-6 sm:mt-8 mb-4 ${step.bgColor} rounded-full flex items-center justify-center`}>
+                  <div className={step.textColor}>
+                    <step.Icon />
+                  </div>
+                </div>
+
+                {/* Title & Description */}
+                <h3 className="font-bold text-gray-800 mb-2 sm:mb-3 text-center text-xs sm:text-sm lg:text-base">
+                  {step.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed text-center text-xs sm:text-sm">
+                  {step.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Smart Filtering Visual */}
-      <section className="py-16 sm:py-20 bg-gradient-to-br from-indigo-50 to-purple-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
+      {/* ==================== SMART FILTERING VISUAL ==================== */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-indigo-50 to-purple-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Heading */}
+          <div className="text-center mb-10 sm:mb-14">
             <h2 className="font-bold text-gray-800 mb-4" style={{fontSize:'clamp(1.4rem, 3.5vw, 2rem)'}}>
-              Smart Rating-Based Redirection
+              Rating-Based Smart Redirection
             </h2>
-            <p className="text-gray-600" style={{fontSize:'12px'}}>The secret sauce that protects your reputation</p>
+            <p className="text-gray-600 text-xs sm:text-sm">The secret sauce that protects your reputation</p>
           </div>
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Positive Flow */}
-            <div className="bg-white p-8 rounded-2xl shadow-xl border-2 border-green-300">
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center gap-2 bg-green-100 px-6 py-3 rounded-full mb-4">
-                  <svg className="w-6 h-6 text-green-700" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                  <span className="font-bold text-green-700" style={{fontSize:'clamp(1rem,2vw,1.3rem)'}}>4-5 Stars</span>
+
+          {/* Comparison Grid */}
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
+            {/* Positive Path */}
+            <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border-2 border-green-300">
+              <div className="text-center mb-6 sm:mb-8">
+                <div className="inline-flex items-center gap-2 bg-green-100 px-4 sm:px-6 py-2 sm:py-3 rounded-full mb-4">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-700" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                  <span className="font-bold text-green-700 text-xs sm:text-sm">4-5 Stars</span>
                 </div>
-                <h3 className="font-bold text-green-700 mb-2" style={{fontSize:'clamp(1rem,2vw,1.2rem)'}}>Happy Customer Path</h3>
+                <h3 className="font-bold text-green-700 text-sm sm:text-base">Happy Customer Path</h3>
               </div>
-              <div className="space-y-4" style={{fontSize:'12px'}}>
-                <div className="flex items-center gap-3 bg-green-50 p-4 rounded-lg"><div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">1</div><p className="text-gray-700">Customer gives 4 or 5 stars</p></div>
-                <div className="flex justify-center"><svg className="w-6 h-6 text-green-300" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v10.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V4a1 1 0 011-1z" clipRule="evenodd"/></svg></div>
-                <div className="flex items-center gap-3 bg-green-50 p-4 rounded-lg"><div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">2</div><p className="text-gray-700">Auto-redirect to Google Review page</p></div>
-                <div className="flex justify-center"><svg className="w-6 h-6 text-green-300" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v10.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V4a1 1 0 011-1z" clipRule="evenodd"/></svg></div>
-                <div className="flex items-center gap-3 bg-green-100 p-4 rounded-lg border-2 border-green-400"><div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center flex-shrink-0"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg></div><p className="text-gray-800 font-semibold">Positive review goes PUBLIC on Google!</p></div>
-              </div>
-              <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200"><p className="text-green-800 text-center flex items-center justify-center gap-2" style={{fontSize:'12px'}}><strong>Result:</strong> Your Google rating improves automatically!</p></div>
-            </div>
-            {/* Negative Flow */}
-            <div className="bg-white p-8 rounded-2xl shadow-xl border-2 border-orange-300">
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center gap-2 bg-orange-100 px-6 py-3 rounded-full mb-4">
-                  <svg className="w-6 h-6 text-orange-700" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                  <span className="font-bold text-orange-700" style={{fontSize:'clamp(1rem,2vw,1.3rem)'}}>1-3 Stars</span>
+              <div className="space-y-3 sm:space-y-4 text-xs sm:text-sm">
+                <div className="flex items-center gap-3 bg-green-50 p-3 sm:p-4 rounded-lg">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-green-500 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs">1</div>
+                  <p className="text-gray-700">Customer gives 4 or 5 stars</p>
                 </div>
-                <h3 className="font-bold text-orange-700 mb-2" style={{fontSize:'clamp(1rem,2vw,1.2rem)'}}>Unhappy Customer Path</h3>
-              </div>
-              <div className="space-y-4" style={{fontSize:'12px'}}>
-                <div className="flex items-center gap-3 bg-orange-50 p-4 rounded-lg"><div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">1</div><p className="text-gray-700">Customer gives 1, 2, or 3 stars</p></div>
-                <div className="flex justify-center"><svg className="w-6 h-6 text-orange-300" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v10.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V4a1 1 0 011-1z" clipRule="evenodd"/></svg></div>
-                <div className="flex items-center gap-3 bg-orange-50 p-4 rounded-lg"><div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold">2</div><p className="text-gray-700">Feedback saved to private dashboard</p></div>
-                <div className="flex justify-center"><svg className="w-6 h-6 text-orange-300" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v10.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V4a1 1 0 011-1z" clipRule="evenodd"/></svg></div>
-                <div className="flex items-center gap-3 bg-orange-100 p-4 rounded-lg border-2 border-orange-400"><div className="w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center flex-shrink-0"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/></svg></div><p className="text-gray-800 font-semibold">Review stays PRIVATE. Not posted to Google!</p></div>
-              </div>
-              <div className="mt-6 p-4 bg-orange-50 rounded-lg border border-orange-200"><p className="text-orange-800 text-center flex items-center justify-center gap-2" style={{fontSize:'12px'}}><strong>Result:</strong> You can fix the issue privately. Reputation protected!</p></div>
-            </div>
-          </div>
-          <div className="mt-12 max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg border-2 border-indigo-200">
-            <h3 className="font-bold text-indigo-600 mb-6 text-center" style={{fontSize:'clamp(1rem,2.5vw,1.3rem)'}}>Why This Works So Well</h3>
-            <div className="grid sm:grid-cols-3 gap-6">
-              {[
-                { bg: "bg-blue-100", color: "text-blue-600", label: "Only Best Reviews Public" },
-                { bg: "bg-purple-100", color: "text-purple-600", label: "Protect Your Reputation" },
-                { bg: "bg-green-100", color: "text-green-600", label: "Rating Keeps Growing" },
-              ].map((item, i) => (
-                <div key={i} className="text-center">
-                  <div className={`w-16 h-16 mx-auto mb-3 ${item.bg} rounded-full flex items-center justify-center`}>
-                    <svg className={`w-8 h-8 ${item.color}`} fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>
+                <div className="flex justify-center">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 3a1 1 0 011 1v10.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V4a1 1 0 011-1z" clipRule="evenodd"/>
+                  </svg>
+                </div>
+                <div className="flex items-center gap-3 bg-green-50 p-3 sm:p-4 rounded-lg">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-green-500 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs">2</div>
+                  <p className="text-gray-700">Auto-redirects to Google Review page</p>
+                </div>
+                <div className="flex justify-center">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 3a1 1 0 011 1v10.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V4a1 1 0 011-1z" clipRule="evenodd"/>
+                  </svg>
+                </div>
+                <div className="flex items-center gap-3 bg-green-100 p-3 sm:p-4 rounded-lg border-2 border-green-400">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-green-600 text-white rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                    </svg>
                   </div>
-                  <p className="font-semibold text-gray-800" style={{fontSize:'12px'}}>{item.label}</p>
+                  <p className="text-gray-800 font-semibold text-xs sm:text-sm">Review goes PUBLIC on Google!</p>
                 </div>
-              ))}
+              </div>
+              <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-green-50 rounded-lg border border-green-200">
+                <p className="text-green-800 text-center text-xs sm:text-sm font-medium">
+                  <strong>Result:</strong> Your Google rating improves automatically!
+                </p>
+              </div>
+            </div>
+
+            {/* Negative Path */}
+            <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border-2 border-orange-300">
+              <div className="text-center mb-6 sm:mb-8">
+                <div className="inline-flex items-center gap-2 bg-orange-100 px-4 sm:px-6 py-2 sm:py-3 rounded-full mb-4">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-orange-700" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                  <span className="font-bold text-orange-700 text-xs sm:text-sm">1-3 Stars</span>
+                </div>
+                <h3 className="font-bold text-orange-700 text-sm sm:text-base">Unhappy Customer Path</h3>
+              </div>
+              <div className="space-y-3 sm:space-y-4 text-xs sm:text-sm">
+                <div className="flex items-center gap-3 bg-orange-50 p-3 sm:p-4 rounded-lg">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-orange-500 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs">1</div>
+                  <p className="text-gray-700">Customer gives 1, 2, or 3 stars</p>
+                </div>
+                <div className="flex justify-center">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-orange-300" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 3a1 1 0 011 1v10.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V4a1 1 0 011-1z" clipRule="evenodd"/>
+                  </svg>
+                </div>
+                <div className="flex items-center gap-3 bg-orange-50 p-3 sm:p-4 rounded-lg">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-orange-500 text-white rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs">2</div>
+                  <p className="text-gray-700">Feedback saved to private dashboard</p>
+                </div>
+                <div className="flex justify-center">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-orange-300" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 3a1 1 0 011 1v10.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V4a1 1 0 011-1z" clipRule="evenodd"/>
+                  </svg>
+                </div>
+                <div className="flex items-center gap-3 bg-orange-100 p-3 sm:p-4 rounded-lg border-2 border-orange-400">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-orange-600 text-white rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd"/>
+                    </svg>
+                  </div>
+                  <p className="text-gray-800 font-semibold text-xs sm:text-sm">Review stays PRIVATE!</p>
+                </div>
+              </div>
+              <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-orange-50 rounded-lg border border-orange-200">
+                <p className="text-orange-800 text-center text-xs sm:text-sm font-medium">
+                  <strong>Result:</strong> You can fix the issue privately. Reputation protected!
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-16 sm:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 sm:mb-16">
+      {/* ==================== FEATURES SECTION ==================== */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Heading */}
+          <div className="text-center mb-10 sm:mb-14">
             <h2 className="font-bold text-gray-800 mb-4" style={{fontSize:'clamp(1.4rem, 4vw, 2.5rem)'}}>
-              Complete Review Management System
+              Complete Review Management
             </h2>
-            <p className="text-gray-600 max-w-3xl mx-auto" style={{fontSize:'12px'}}>
+            <p className="text-gray-600 max-w-3xl mx-auto text-xs sm:text-sm">
               Everything you need to collect, filter, and manage customer feedback effectively
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
-              { gradient: "from-blue-500 to-indigo-500", title: "Smart QR Code Generator", desc: "Create unlimited QR codes for different locations, tables, or products. Each QR links to your smart feedback form.", tags: ["Unlimited QR codes", "Custom designs", "Print-ready files"] },
-              { gradient: "from-purple-500 to-pink-500", title: "Intelligent Rating Filter", desc: "Automatically routes 4-5 star reviews to Google while keeping 1-3 star feedback private in your dashboard.", tags: ["Auto-routing", "Smart filtering", "Reputation protection"] },
-              { gradient: "from-green-500 to-teal-500", title: "Private Feedback Dashboard", desc: "View all negative feedback privately. Analyze issues, respond to customers, and improve your service.", tags: ["Real-time updates", "Detailed analytics", "Issue tracking"] },
-              { gradient: "from-yellow-500 to-orange-500", title: "Google Review Integration", desc: "Seamless integration with Google My Business. Happy customers get directed to leave reviews instantly.", tags: ["Direct Google link", "One-tap review", "Higher conversion"] },
-              { gradient: "from-red-500 to-pink-500", title: "Instant Notifications", desc: "Get alerts for every review - whether positive or negative. Never miss important customer feedback.", tags: ["Email alerts", "SMS notifications", "Real-time updates"] },
-              { gradient: "from-indigo-500 to-purple-500", title: "Multi-Location Support", desc: "Manage multiple restaurant branches, shops, or locations from one central dashboard with ease.", tags: ["Unlimited locations", "Centralized control", "Location analytics"] },
+              { title: "Smart QR Generator", desc: "Create unlimited QR codes. Print anywhere.", Icon: Icons.QR, bgColor: "bg-blue-100", textColor: "text-blue-600" },
+              { title: "Intelligent Filter", desc: "Auto-route positive reviews to Google.", Icon: Icons.Filter, bgColor: "bg-green-100", textColor: "text-green-600" },
+              { title: "Private Dashboard", desc: "View all negative feedback privately.", Icon: Icons.Lock, bgColor: "bg-red-100", textColor: "text-red-600" },
+              { title: "Google Integration", desc: "Seamless Google My Business sync.", Icon: Icons.Link, bgColor: "bg-yellow-100", textColor: "text-yellow-600" },
+              { title: "Instant Alerts", desc: "Get notified of every review instantly.", Icon: Icons.Bell, bgColor: "bg-purple-100", textColor: "text-purple-600" },
+              { title: "Multi-Location", desc: "Manage all branches from one place.", Icon: Icons.Building, bgColor: "bg-indigo-100", textColor: "text-indigo-600" },
             ].map((feature, i) => (
-              <div key={i} className="group bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 flex flex-col hover:-translate-y-2">
-                <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>
+              <div key={i} className="bg-white p-6 sm:p-7 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all">
+                <div className={`w-14 h-14 sm:w-16 sm:h-16 ${feature.bgColor} rounded-xl flex items-center justify-center mb-4 ${feature.textColor}`}>
+                  <feature.Icon />
                 </div>
-                <h3 className="font-bold text-gray-800 mb-4" style={{fontSize:'clamp(0.9rem, 1.8vw, 1.1rem)'}}>{feature.title}</h3>
-                <p className="text-gray-600 mb-6 leading-relaxed flex-grow" style={{fontSize:'12px'}}>{feature.desc}</p>
-                <div className="flex flex-wrap gap-2">
-                  {feature.tags.map((tag, j) => (
-                    <span key={j} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full font-medium" style={{fontSize:'12px'}}>{tag}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* Perfect For Section */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
-            <h2 className="font-bold text-gray-800 mb-4" style={{fontSize:'clamp(1.4rem, 3.5vw, 2rem)'}}>
-              Perfect For Every Local Business
-            </h2>
-            <p className="text-gray-600" style={{fontSize:'12px'}}>Trusted by thousands of businesses across industries</p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {[
-              { bg: "bg-orange-100", color: "text-orange-600", label: "Restaurants" },
-              { bg: "bg-yellow-100", color: "text-yellow-600", label: "Cafes & Bars" },
-              { bg: "bg-pink-100", color: "text-pink-600", label: "Salons & Spas" },
-              { bg: "bg-blue-100", color: "text-blue-600", label: "Dental Clinics" },
-              { bg: "bg-purple-100", color: "text-purple-600", label: "Retail Shops" },
-              { bg: "bg-red-100", color: "text-red-600", label: "Hotels" },
-              { bg: "bg-green-100", color: "text-green-600", label: "Gyms & Fitness" },
-              { bg: "bg-gray-100", color: "text-gray-600", label: "Auto Services" },
-            ].map((item, i) => (
-              <div key={i} className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all text-center hover:-translate-y-1">
-                <div className={`w-16 h-16 mx-auto mb-3 ${item.bg} rounded-full flex items-center justify-center`}>
-                  <svg className={`w-8 h-8 ${item.color}`} fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>
-                </div>
-                <p className="font-semibold text-gray-800" style={{fontSize:'12px'}}>{item.label}</p>
+                <h3 className="font-bold text-gray-800 mb-3 text-sm sm:text-base">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 text-xs sm:text-sm">
+                  {feature.desc}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Demo Section — QR placeholder removed, replaced with call CTA */}
-      <section id="demo" className="py-16 sm:py-20 bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900 text-white text-center relative overflow-hidden">
+      {/* ==================== PERFECT FOR SECTION ==================== */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-14">
+            <h2 className="font-bold text-gray-800 mb-4" style={{fontSize:'clamp(1.4rem, 3.5vw, 2rem)'}}>
+              Perfect For Every Local Business
+            </h2>
+            <p className="text-gray-600 text-xs sm:text-sm">Trusted by thousands across industries</p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {[
+              { name: "Restaurants", icon: "🍽️" },
+              { name: "Cafes", icon: "☕" },
+              { name: "Salons", icon: "💇" },
+              { name: "Clinics", icon: "🏥" },
+              { name: "Retail", icon: "🛍️" },
+              { name: "Hotels", icon: "🏨" },
+              { name: "Gyms", icon: "💪" },
+              { name: "Auto Services", icon: "🔧" },
+            ].map((item, i) => (
+              <div key={i} className="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg transition-all text-center hover:-translate-y-1">
+                <div className="text-3xl sm:text-4xl mb-2">{item.icon}</div>
+                <p className="font-semibold text-gray-800 text-xs sm:text-sm">
+                  {item.name}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ==================== DEMO CTA SECTION ==================== */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900 text-white text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-72 h-72 bg-purple-500 rounded-full filter blur-3xl"></div>
           <div className="absolute bottom-10 right-10 w-72 h-72 bg-indigo-500 rounded-full filter blur-3xl"></div>
         </div>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-          <h2 className="font-bold mb-6" style={{fontSize:'clamp(1.5rem, 4vw, 2.5rem)'}}>Try It Yourself</h2>
-          <p className="text-indigo-200 mb-12 max-w-3xl mx-auto" style={{fontSize:'12px'}}>
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <h2 className="font-bold mb-4 sm:mb-6" style={{fontSize:'clamp(1.5rem, 4vw, 2.5rem)'}}>
+            Try It Yourself
+          </h2>
+          <p className="text-indigo-200 mb-8 sm:mb-12 max-w-3xl mx-auto text-xs sm:text-sm">
             Experience the smart review system live. Call us for a personal demo!
           </p>
+
           <a
             href="tel:9425305534"
-            className="inline-flex items-center gap-3 bg-yellow-400 text-indigo-900 px-10 py-5 rounded-full font-bold hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105"
-            style={{fontSize:'clamp(0.9rem, 2vw, 1.1rem)'}}
+            className="inline-flex items-center gap-2 sm:gap-3 bg-yellow-400 text-indigo-900 px-6 sm:px-10 py-3 sm:py-5 rounded-full font-bold hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105 text-xs sm:text-sm lg:text-base"
           >
-            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
-            </svg>
+            <Icons.PhoneCall />
             Call Demo: 94253 05534
           </a>
-          <div className="mt-12 grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            {[
-              { title: "Call Us", desc: "Dial the demo number" },
-              { title: "Rate Experience", desc: "Choose 1-5 stars" },
-              { title: "Smart Redirect", desc: "See where you go!" },
-            ].map((item, i) => (
-              <div key={i} className="bg-white bg-opacity-10 backdrop-blur-sm p-6 rounded-xl">
-                <h4 className="font-bold text-black mb-2" style={{fontSize:'12px'}}>{item.title}</h4>
-                <p className="text-black" style={{fontSize:'12px'}}>{item.desc}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
+      {/* ==================== TESTIMONIALS ==================== */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-14">
             <h2 className="font-bold text-gray-800 mb-4" style={{fontSize:'clamp(1.4rem, 3.5vw, 2rem)'}}>
               What Business Owners Say
             </h2>
-            <p className="text-gray-600" style={{fontSize:'12px'}}>Real results from real businesses</p>
+            <p className="text-gray-600 text-xs sm:text-sm">Real results from real businesses</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+
+          <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
             {[
-              { name: "Rajesh Kumar", business: "Kumar's Restaurant, Delhi", rating: 4.2, newRating: 4.7, text: "Our Google rating jumped from 4.2 to 4.7 in just 2 months! Now only happy customers post reviews publicly." },
-              { name: "Priya Sharma", business: "Glamour Salon, Mumbai", rating: 3.8, newRating: 4.6, text: "We used to get negative reviews for small issues. Now we fix problems privately before they hurt our reputation." },
-              { name: "Amit Patel", business: "Patel Dental Clinic, Bangalore", rating: 4.1, newRating: 4.8, text: "The QR code system is genius! Patients love how easy it is to leave feedback. Our bookings increased by 40%." },
+              { name: "Rajesh Kumar", business: "Restaurant, Delhi", rating: "4.2 → 4.7", text: "Rating jumped in 2 months! Only happy customers post reviews publicly now." },
+              { name: "Priya Sharma", business: "Salon, Mumbai", rating: "3.8 → 4.6", text: "We fix problems privately now. No more public reputation damage." },
+              { name: "Amit Patel", business: "Clinic, Bangalore", rating: "4.1 → 4.8", text: "QR system is genius! Bookings increased by 40%." },
             ].map((t, i) => (
-              <div key={i} className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl shadow-lg border border-indigo-100">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="bg-gradient-to-br from-red-500 to-orange-500 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1" style={{fontSize:'12px'}}>{t.rating} ★</div>
-                  <svg className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd"/></svg>
-                  <div className="bg-gradient-to-br from-green-500 to-teal-500 text-white px-3 py-1 rounded-full font-bold flex items-center gap-1" style={{fontSize:'12px'}}>{t.newRating} ★</div>
+              <div key={i} className="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 sm:p-8 rounded-2xl shadow-lg border border-indigo-100">
+                <div className="flex items-center gap-2 mb-4 flex-wrap">
+                  <div className="bg-red-500 text-white px-2 sm:px-3 py-1 rounded-full font-bold text-xs sm:text-sm">
+                    {t.rating}
+                  </div>
                 </div>
-                <p className="text-gray-700 mb-6 italic" style={{fontSize:'12px'}}>"{t.text}"</p>
+                <p className="text-gray-700 mb-6 italic text-xs sm:text-sm">
+                  "{t.text}"
+                </p>
                 <div className="border-t border-indigo-200 pt-4">
-                  <p className="font-bold text-gray-800" style={{fontSize:'12px'}}>{t.name}</p>
-                  <p className="text-gray-600" style={{fontSize:'12px'}}>{t.business}</p>
+                  <p className="font-bold text-gray-800 text-xs sm:text-sm">{t.name}</p>
+                  <p className="text-gray-600 text-xs">{t.business}</p>
                 </div>
               </div>
             ))}
@@ -390,69 +527,103 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
+      {/* ==================== FAQ SECTION ==================== */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-14">
             <h2 className="font-bold text-gray-800 mb-4" style={{fontSize:'clamp(1.4rem, 3.5vw, 2rem)'}}>
               Frequently Asked Questions
             </h2>
           </div>
-          <div className="space-y-6">
+
+          <div className="space-y-3 sm:space-y-4">
             {[
-              { q: "Is filtering negative reviews legal?", a: "Yes! You're not deleting or hiding reviews. You're simply collecting private feedback first and only directing happy customers to public platforms. This is a smart business practice used by thousands of companies worldwide." },
-              { q: "How does the QR code work?", a: "Customers scan the QR code with their phone camera (no app needed). It opens a simple feedback form where they rate their experience. Based on the rating (1-5 stars), they're either directed to Google or the feedback stays in your private dashboard." },
-              { q: "What happens to 1-3 star reviews?", a: "They're saved privately in your dashboard where you can view, analyze, and respond to them. This gives you a chance to fix issues and potentially turn unhappy customers into happy ones - without public damage." },
-              { q: "Can I customize the QR codes?", a: "Yes! You can add your logo, change colors, and create custom designs that match your brand. We provide print-ready files for cards, stickers, and posters." },
-              { q: "Do I need technical knowledge to set this up?", a: "Not at all! Setup takes less than 5 minutes. Just create an account, connect your Google Business, generate QR codes, and you're ready to go." },
-              { q: "What if I have multiple business locations?", a: "Perfect! Our Pro and Enterprise plans support multiple locations. You can manage all your branches from one central dashboard with location-specific analytics." },
+              { q: "Is filtering negative reviews legal?", a: "Yes! You're collecting private feedback first and directing happy customers to public platforms. This is a smart business practice used worldwide." },
+              { q: "How does the QR code work?", a: "Customers scan the QR with their phone camera. A feedback form opens where they rate 1-5 stars. They're auto-directed to Google or your dashboard based on the rating." },
+              { q: "What happens to 1-3 star reviews?", a: "They're saved in your private dashboard where you can view, analyze, and respond. This gives you a chance to fix issues privately." },
+              { q: "Can I customize QR codes?", a: "Yes! Add your logo, change colors, and get print-ready files for cards and posters." },
+              { q: "Do I need technical knowledge?", a: "Not at all! Setup takes less than 5 minutes. Create account, connect Google Business, generate QR codes, and you're done." },
+              { q: "What about multiple locations?", a: "Our Pro and Enterprise plans support unlimited locations with location-specific analytics." },
             ].map((faq, i) => (
-              <div key={i} className="bg-white p-6 rounded-xl border border-gray-200 hover:border-indigo-300 transition">
-                <h3 className="font-bold text-gray-800 mb-3 flex items-start gap-2" style={{fontSize:'12px'}}>
-                  <svg className="w-6 h-6 text-indigo-600 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"/></svg>
-                  <span>{faq.q}</span>
-                </h3>
-                <p className="text-gray-600 leading-relaxed ml-8" style={{fontSize:'12px'}}>{faq.a}</p>
+              <div key={i} className="bg-white rounded-xl border border-gray-200 hover:border-indigo-300 transition overflow-hidden">
+                <button
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full p-4 sm:p-6 text-left flex items-center justify-between hover:bg-gray-50 transition"
+                >
+                  <h3 className="font-bold text-gray-800 text-xs sm:text-sm pr-4">
+                    {faq.q}
+                  </h3>
+                  <div className={`flex-shrink-0 text-indigo-600 transition-transform ${openFaq === i ? 'rotate-180' : ''}`}>
+                    <Icons.ChevronDown />
+                  </div>
+                </button>
+                {openFaq === i && (
+                  <div className="px-4 sm:px-6 pb-4 sm:pb-6 border-t border-gray-200 bg-gray-50">
+                    <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+                      {faq.a}
+                    </p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Final CTA Section */}
-      <section className="py-16 sm:py-20 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 text-white text-center relative overflow-hidden">
+      {/* ==================== FINAL CTA ==================== */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 text-white text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl animate-pulse"></div>
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500 rounded-full filter blur-3xl animate-pulse delay-1000"></div>
         </div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
-          <h2 className="font-bold mb-6" style={{fontSize:'clamp(1.5rem, 4vw, 2.5rem)'}}>
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <h2 className="font-bold mb-4 sm:mb-6" style={{fontSize:'clamp(1.5rem, 4vw, 2.5rem)'}}>
             Ready to Transform Your Google Reviews?
           </h2>
-          <p className="mb-8 text-indigo-100 max-w-2xl mx-auto leading-relaxed" style={{fontSize:'12px'}}>
-            Join thousands of businesses already protecting their reputation and boosting their ratings with smart review filtering.
+          <p className="mb-8 sm:mb-10 text-indigo-100 max-w-2xl mx-auto text-xs sm:text-sm leading-relaxed">
+            Join thousands of businesses protecting their reputation and boosting ratings with smart review filtering.
           </p>
-          <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl p-8 mb-8 max-w-2xl mx-auto border border-white border-opacity-20">
-            <div className="grid sm:grid-cols-3 gap-6 text-center">
-              <div><div className="font-bold  text-black mb-1" style={{fontSize:'clamp(1.5rem,3vw,2rem)'}}>2,500+</div><div className="text-black" style={{fontSize:'12px'}}>Happy Businesses</div></div>
-              <div><div className="font-bold  text-black  mb-1" style={{fontSize:'clamp(1.5rem,3vw,2rem)'}}>50,000+</div><div className="text-black" style={{fontSize:'12px'}}>Reviews Filtered</div></div>
-              <div><div className="font-bold  text-black mb-1" style={{fontSize:'clamp(1.5rem,3vw,2rem)'}}>4.8★</div><div className="text-black" style={{fontSize:'12px'}}>Average Rating</div></div>
+
+          {/* Stats Box */}
+          <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl p-6 sm:p-8 mb-8 max-w-2xl mx-auto border border-white border-opacity-20">
+            <div className="grid sm:grid-cols-3 gap-4 sm:gap-6 text-center">
+              <div>
+                <div className="font-bold text-black mb-1" style={{fontSize:'clamp(1.3rem, 2.5vw, 1.8rem)'}}>
+                  2,500+
+                </div>
+                <div className="text-black text-xs sm:text-sm">Happy Businesses</div>
+              </div>
+              <div>
+                <div className="font-bold text-black mb-1" style={{fontSize:'clamp(1.3rem, 2.5vw, 1.8rem)'}}>
+                  50,000+
+                </div>
+                <div className="text-black text-xs sm:text-sm">Reviews Filtered</div>
+              </div>
+              <div>
+                <div className="font-bold text-black mb-1" style={{fontSize:'clamp(1.3rem, 2.5vw, 1.8rem)'}}>
+                  4.8★
+                </div>
+                <div className="text-black text-xs sm:text-sm">Avg Rating</div>
+              </div>
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-           
-            <a href="tel:9425305534" className="border-2 border-white text-white px-10 py-5 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto flex items-center justify-center gap-2" style={{fontSize:'12px'}}>
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
-              Schedule a Demo Call
-            </a>
-          </div>
-          <div className="mt-8 flex flex-wrap justify-center gap-6" style={{fontSize:'12px'}}>
-            {["No Credit Card Required", "Setup in 5 Minutes", "Cancel Anytime"].map((text, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>
-                <span>{text}</span>
-              </div>
-            ))}
+
+          <a
+            href="tel:9425305534"
+            className="inline-flex items-center justify-center gap-2 sm:gap-3 border-2 border-white text-white px-6 sm:px-10 py-3 sm:py-5 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto text-xs sm:text-sm lg:text-base"
+          >
+            <Icons.PhoneCall />
+            Schedule a Demo Call
+          </a>
+
+          <div className="mt-6 sm:mt-8 flex justify-center text-xs sm:text-sm">
+            <div className="flex items-center gap-2">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+              </svg>
+              <span>Setup in 5 Minutes</span>
+            </div>
           </div>
         </div>
       </section>
