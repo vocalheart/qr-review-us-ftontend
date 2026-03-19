@@ -38,7 +38,7 @@ export default function Navbar() {
       <div className="px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="flex justify-between items-center h-16 sm:h-20 lg:h-24">
           
-          {/* ✅ LOGO — Responsive sizing */}
+          {/* LOGO — Responsive sizing */}
           <Link
             href="/"
             className="flex items-center gap-2 font-bold text-indigo-600 hover:text-indigo-700 transition-colors duration-200 flex-shrink-0"
@@ -166,7 +166,6 @@ export default function Navbar() {
                 >
                   Login
                 </Link>
-
                 <Link
                   href="/signup"
                   className="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-3 sm:px-4 py-2 rounded-lg font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200"

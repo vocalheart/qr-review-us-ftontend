@@ -456,7 +456,7 @@ export default function TermsConditions() {
                       <div>
                         <p className="font-semibold text-gray-800">Phone</p>
                         <a href="tel:7554045078" className="text-indigo-600 hover:text-indigo-700">
-                          07554045078
+                          7554045078
                         </a>
                       </div>
                     </div>
@@ -495,11 +495,11 @@ export default function TermsConditions() {
             Questions About Our Terms?
           </h2>
           <p className="text-indigo-100 mb-8 text-xs sm:text-sm">
-            Our support team is ready to help. Contact us anytime.
+            Our support team is ready to help. Contact us - 10am to 7pm, MON - SAT
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
-              href="tel:9425305534"
+              href="tel:7554045078"
               className="inline-flex items-center gap-2 sm:gap-3 bg-white text-indigo-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold hover:bg-gray-100 transition-all w-full sm:w-auto text-center text-xs sm:text-sm lg:text-base"
             >
               <Icons.Phone />
@@ -516,17 +516,7 @@ export default function TermsConditions() {
         </div>
       </section>
 
-      {/* ==================== FOOTER INFO ==================== */}
-      <section className="py-8 sm:py-12 bg-gray-900 text-gray-400 text-center text-xs sm:text-sm px-4">
-        <div className="max-w-4xl mx-auto">
-          <p>
-            © 2026  ReviewBadhao System. All rights reserved. | 
-            <a href="#" className="text-gray-300 hover:text-white ml-2">Privacy Policy</a> | 
-            <a href="#" className="text-gray-300 hover:text-white ml-2">Terms of Service</a> |
-            <a href="#" className="text-gray-300 hover:text-white ml-2">Refund Policy</a>
-          </p>
-        </div>
-      </section>
+    
     </>
   );
 }
