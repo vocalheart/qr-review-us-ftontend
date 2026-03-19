@@ -81,7 +81,7 @@ export default function RefundPolicy() {
       content: [
         {
           subtitle: "Important: We Do NOT Offer Refunds",
-          text: "After the 14-day free trial ends and payment is made, NO REFUNDS are available under any circumstances. This is a strict no-refund policy.",
+          text: ", NO REFUNDS are available under any circumstances. This is a strict no-refund policy.",
         },
         {
           subtitle: "What This Means:",
@@ -360,11 +360,7 @@ export default function RefundPolicy() {
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { 
-                icon: Icons.Gift, 
-                title: "14-Day Free Trial", 
-                desc: "Full access, no credit card needed"
-              },
+             
               { 
                 icon: Icons.X, 
                 title: "NO REFUNDS", 
