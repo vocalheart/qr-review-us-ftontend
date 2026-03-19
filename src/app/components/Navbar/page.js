@@ -196,6 +196,13 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Navigation Links */}
+             <Link
+              href="/dashboard"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 hover:bg-indigo-50 text-gray-700 text-sm font-medium transition-colors duration-150 border-l-2 border-transparent hover:border-indigo-500"
+            >
+             Dashboard
+            </Link>
             <Link
               href="/profile"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -212,6 +219,31 @@ export default function Navbar() {
             >
               <History className="w-5 h-5 text-indigo-500" />
               Subscription History
+            </Link>
+            <Link
+              href="/submissions"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 hover:bg-indigo-50 text-gray-700 text-sm font-medium transition-colors duration-150 border-l-2 border-transparent hover:border-indigo-500"
+            >
+              <History className="w-5 h-5 text-indigo-500" />
+              Reviews
+            </Link>
+
+             <Link
+              href="/subscribe"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 hover:bg-indigo-50 text-gray-700 text-sm font-medium transition-colors duration-150 border-l-2 border-transparent hover:border-indigo-500"
+            >
+              <History className="w-5 h-5 text-indigo-500" />
+              subscribe
+            </Link>
+            <Link
+              href="/generate-qr"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-3 px-4 py-3 hover:bg-indigo-50 text-gray-700 text-sm font-medium transition-colors duration-150 border-l-2 border-transparent hover:border-indigo-500"
+            >
+              <History className="w-5 h-5 text-indigo-500" />
+              subscribe
             </Link>
 
             {/* Mobile Logout Button */}
