@@ -243,7 +243,7 @@ export default function Navbar() {
               className="flex items-center gap-3 px-4 py-3 hover:bg-indigo-50 text-gray-700 text-sm font-medium transition-colors duration-150 border-l-2 border-transparent hover:border-indigo-500"
             >
               <History className="w-5 h-5 text-indigo-500" />
-              subscribe
+              generate-qr
             </Link>
 
             {/* Mobile Logout Button */}
