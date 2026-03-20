@@ -530,7 +530,7 @@ export default function Home() {
                 helpful: 203
               },
               { 
-                name: "Dr. Amit Patel", 
+                name: "Dr. Amit Patel",
                 business: "Patel Dental Clinic", 
                 location: "Bangalore",
                 category: "Clinic",
