@@ -505,13 +505,13 @@ export default function About() {
                 Get Started Free
               </Link>
               <a
-                href="tel:0+917554937509"
+                href="tel:+917554937509"
                 className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto text-xs sm:text-sm lg:text-base"
               >
                 <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
                 </svg>
-                Call: 0+917554937509
+                Call: +917554937509
               </a>
             </div>
 
