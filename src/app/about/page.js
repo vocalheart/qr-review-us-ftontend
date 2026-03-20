@@ -298,7 +298,7 @@ export default function About() {
                 color: "text-purple-600"
               },
               { 
-                name: "Raj", 
+                name: "Raj Shukla", 
                 role: "Head of Product", 
                 bio: "Design thinker creating intuitive experiences that drive results.",
                 gradient: "from-yellow-100 to-yellow-200",
