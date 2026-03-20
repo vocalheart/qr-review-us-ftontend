@@ -291,7 +291,7 @@ export default function About() {
                 color: "text-indigo-600"
               },
               { 
-                name: "Anurag", 
+                name: "Anurag khare", 
                 role: "CTO", 
                 bio: "Tech innovator specializing in scalable web apps and AI solutions.",
                 gradient: "from-purple-100 to-purple-200",
@@ -414,14 +414,14 @@ export default function About() {
                 className="text-center p-6 bg-white bg-opacity-10 backdrop-blur-sm rounded-xl hover:bg-opacity-20 transition-all"
               >
                 <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                  <svg className="w-7 h-7 sm:w-8 sm:h-8 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-7 h-7 sm:w-8 sm:h-8 text-black" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                   </svg>
                 </div>
-                <div className="font-bold text-yellow-300 mb-2" style={{fontSize:'clamp(1rem, 2.5vw, 1.6rem)'}}>
+                <div className="font-bold text-black mb-2" style={{fontSize:'clamp(1rem, 2.5vw, 1.6rem)'}}>
                   {stat.number}
                 </div>
-                <div className="text-indigo-200 text-xs sm:text-sm">{stat.label}</div>
+                <div className="text-black text-xs sm:text-sm">{stat.label}</div>
               </motion.div>
             ))}
           </div>

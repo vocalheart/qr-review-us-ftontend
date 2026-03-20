@@ -264,8 +264,6 @@ export default function SignupPage() {
             {/* Benefits */}
             <div className="space-y-3 sm:space-y-4">
               {[
-                "14-day free trial",
-                "No credit card required",
                 "Setup in 5 minutes"
               ].map((benefit, i) => (
                 <div key={i} className="flex items-center gap-2 sm:gap-3 justify-center text-xs sm:text-sm text-gray-700">

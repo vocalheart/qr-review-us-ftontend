@@ -87,7 +87,6 @@ export default function Home() {
           <p className="text-indigo-100 max-w-4xl mx-auto leading-relaxed mb-8 sm:mb-10 px-2" style={{fontSize:'clamp(0.9rem, 2.5vw, 1.1rem)'}}>
             Only positive reviews reach Google. Negative feedback stays private. Smart QR-based review filtering for restaurants, shops, clinics & local businesses.
           </p>
-
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mt-8 sm:mt-10">
             <a
@@ -140,8 +139,8 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
-
+      </section>  
+      
       {/* ==================== PROBLEM-SOLUTION SECTION ==================== */}
       <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -153,7 +152,7 @@ export default function Home() {
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/>
                 </svg>
                 Traditional Way Problem
-              </h3>
+              </h3>       
               <ul className="space-y-3 sm:space-y-4 text-gray-700 text-xs sm:text-sm">
                 <li className="flex items-start gap-2">
                   <span className="text-red-500 mt-1 flex-shrink-0">•</span>
@@ -499,27 +498,154 @@ export default function Home() {
             <h2 className="font-bold text-gray-800 mb-4" style={{fontSize:'clamp(1.4rem, 3.5vw, 2rem)'}}>
               What Business Owners Say
             </h2>
-            <p className="text-gray-600 text-xs sm:text-sm">Real results from real businesses</p>
+            <p className="text-gray-600 text-xs sm:text-sm">Real results from real businesses using our system</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
-              { name: "Rajesh Kumar", business: "Restaurant, Delhi", rating: "4.2 → 4.7", text: "Rating jumped in 2 months! Only happy customers post reviews publicly now." },
-              { name: "Priya Sharma", business: "Salon, Mumbai", rating: "3.8 → 4.6", text: "We fix problems privately now. No more public reputation damage." },
-              { name: "Amit Patel", business: "Clinic, Bangalore", rating: "4.1 → 4.8", text: "QR system is genius! Bookings increased by 40%." },
+              { 
+                name: "Raj Malhotra", 
+                business: "Raj Darbar Restaurant", 
+                location: "Delhi",
+                category: "Restaurant",
+                oldRating: "3.8",
+                newRating: "4.7",
+                reviews: "380+ reviews",
+                serviceType: "Fine Dining",
+                text: "Implemented the QR system 3 months ago. Our negative reviews dropped by 85% on Google while we privately improved service. Bookings increased by 45%. This system literally saved our business during tough times!",
+                timeframe: "3 months ago",
+                helpful: 156
+              },
+              { 
+                name: "Priya Sharma", 
+                business: "Sanrix Salon & Spa", 
+                location: "Mumbai",
+                category: "Salon",
+                oldRating: "3.9",
+                newRating: "4.6",
+                reviews: "287+ reviews",
+                serviceType: "Beauty Parlor",
+                text: "The smart filtering is genius! We now handle complaints offline. Unhappy customers feel heard, and happy ones boost our Google presence. Rating jumped without any fake reviews. Highly recommend!",
+                timeframe: "2 months ago",
+                helpful: 203
+              },
+              { 
+                name: "Dr. Amit Patel", 
+                business: "Patel Dental Clinic", 
+                location: "Bangalore",
+                category: "Clinic",
+                oldRating: "4.1",
+                newRating: "4.8",
+                reviews: "412+ reviews",
+                serviceType: "Dental Services",
+                text: "Patient trust increased significantly. The QR system works perfectly in our clinic. We get genuine feedback, fix issues privately, and let happy patients leave public reviews. Our online consultation bookings up 60%!",
+                timeframe: "2 months ago",
+                helpful: 178
+              },
+              { 
+                name: "Vikram Singh", 
+                business: "FitPro Gym & Wellness", 
+                location: "Pune",
+                category: "Gym",
+                oldRating: "4.0",
+                newRating: "4.7",
+                reviews: "195+ reviews",
+                serviceType: "Fitness Center",
+                text: "Members love the easy QR system. We've reduced negative online feedback by 90% while improving internal operations based on private feedback. New member registrations jumped 35% month-on-month!",
+                timeframe: "6 weeks ago",
+                helpful: 142
+              },
+              { 
+                name: "Neha Gupta", 
+                business: "MediCare Plus Hospital", 
+                location: "Indore",
+                category: "Hospital",
+                oldRating: "4.3",
+                newRating: "4.9",
+                reviews: "568+ reviews",
+                serviceType: "Healthcare",
+                text: "In healthcare, reputation is everything. This system allowed us to address patient concerns immediately and privately. Our 4.9 rating now attracts serious patients. Emergency admissions increased 28% last quarter!",
+                timeframe: "4 months ago",
+                helpful: 267
+              },
+              { 
+                name: "Rohan Verma", 
+                business: "Verma's Premium Retail", 
+                location: "Hyderabad",
+                category: "Retail",
+                oldRating: "4.1",
+                newRating: "4.6",
+                reviews: "234+ reviews",
+                serviceType: "Fashion & Lifestyle",
+                text: "Customer satisfaction improved tremendously. We stopped getting one-off bad reviews from grumpy days. Now we receive balanced feedback. Our store traffic increased 32% and repeat customers up 41%.",
+                timeframe: "3 months ago",
+                helpful: 198
+              },
             ].map((t, i) => (
-              <div key={i} className="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 sm:p-8 rounded-2xl shadow-lg border border-indigo-100">
-                <div className="flex items-center gap-2 mb-4 flex-wrap">
-                  <div className="bg-red-500 text-white px-2 sm:px-3 py-1 rounded-full font-bold text-xs sm:text-sm">
-                    {t.rating}
+              <div key={i} className="bg-white rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-all overflow-hidden">
+                {/* Header with rating badge */}
+                <div className="bg-gradient-to-r from-gray-900 to-gray-800 p-4 sm:p-5">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        {t.name.charAt(0)}{t.name.split(' ')[1].charAt(0)}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-bold text-white text-xs sm:text-sm truncate">{t.name}</p>
+                        <p className="text-gray-300 text-xs">{t.location}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <svg className="w-4 h-4 text-yellow-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                      </svg>
+                      <span className="font-bold text-white text-xs sm:text-sm">{t.newRating}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="inline-block bg-blue-600 text-white px-2 sm:px-3 py-1 rounded-md font-semibold text-xs">
+                      {t.business}
+                    </span>
+                    <span className="text-gray-400 text-xs">{t.reviews}</span>
                   </div>
                 </div>
-                <p className="text-gray-700 mb-6 italic text-xs sm:text-sm">
-                  "{t.text}"
-                </p>
-                <div className="border-t border-indigo-200 pt-4">
-                  <p className="font-bold text-gray-800 text-xs sm:text-sm">{t.name}</p>
-                  <p className="text-gray-600 text-xs">{t.business}</p>
+
+                {/* Rating improvement */}
+                <div className="px-4 sm:px-5 pt-4 pb-3 bg-gradient-to-r from-green-50 to-blue-50 border-b border-gray-200">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-gray-600 text-xs">Rating Improvement</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-lg font-bold text-gray-700">{t.oldRating}</span>
+                        <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd"/>
+                        </svg>
+                        <span className="text-lg font-bold text-green-600">{t.newRating}</span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-gray-600">Service</p>
+                      <p className="font-semibold text-gray-800 text-xs">{t.serviceType}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Review text */}
+                <div className="p-4 sm:p-5">
+                  <p className="text-gray-700 text-xs sm:text-sm leading-relaxed mb-4">
+                    "{t.text}"
+                  </p>
+                  
+                  {/* Metadata */}
+                  <div className="flex items-center justify-between text-xs text-gray-500 border-t border-gray-200 pt-3">
+                    <span>{t.timeframe}</span>
+                    <div className="flex items-center gap-1">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633z"/>
+                      </svg>
+                      <span>{t.helpful} found helpful</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}

@@ -264,7 +264,7 @@ export default function RefundPolicy() {
             "Email: reviewbadhao@gmail.com",
             "Subject line: BILLING INQUIRY or REFUND QUESTION",
             "Phone: +917554937509",
-            "Hours: Monday - Friday, 9 AM - 6 PM IST",
+            "Hours: Monday - Friday, 10 AM - 7 PM IST",
           ],
         },
         {
