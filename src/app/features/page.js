@@ -68,7 +68,7 @@ export default function Features() {
           >
            
             <motion.a
-              href="tel:07554045078"
+              href="tel:0+917554937509"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="inline-flex items-center gap-2 px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto text-center"
@@ -391,7 +391,7 @@ export default function Features() {
           >
             
             <motion.a
-              href="tel:07554045078"
+              href="tel:0+917554937509"
               whileHover={{ scale: 1.05 }}
               className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto"
               style={{fontSize:'12px'}}
@@ -399,7 +399,7 @@ export default function Features() {
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
               </svg>
-              Call Demo: 07554045078
+              Call Demo: 0+917554937509
             </motion.a>
           </motion.div>
 
@@ -466,11 +466,11 @@ export default function Features() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             
-            <a href="tel:07554045078" className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-10 py-5 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto" style={{fontSize:'12px'}}>
+            <a href="tel:0+917554937509" className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-10 py-5 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto" style={{fontSize:'12px'}}>
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
               </svg>
-              Call: 07554045078
+              Call: 0+917554937509
             </a>
           </motion.div>
 

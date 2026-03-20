@@ -455,8 +455,8 @@ export default function TermsConditions() {
                       <Icons.Phone />
                       <div>
                         <p className="font-semibold text-gray-800">Phone</p>
-                        <a href="tel:7554045078" className="text-indigo-600 hover:text-indigo-700">
-                          7554045078
+                        <a href="tel:+917554937509" className="text-indigo-600 hover:text-indigo-700">
+                          +917554937509
                         </a>
                       </div>
                     </div>
@@ -499,7 +499,7 @@ export default function TermsConditions() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
-              href="tel:7554045078"
+              href="tel:+917554937509"
               className="inline-flex items-center gap-2 sm:gap-3 bg-white text-indigo-600 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold hover:bg-gray-100 transition-all w-full sm:w-auto text-center text-xs sm:text-sm lg:text-base"
             >
               <Icons.Phone />

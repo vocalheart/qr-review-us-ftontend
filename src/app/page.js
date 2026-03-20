@@ -97,7 +97,7 @@ export default function Home() {
               See How It Works
             </a>
             <a
-              href="tel:7554045078"
+              href="tel:+917554937509"
               className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto text-center text-sm sm:text-base"
             >
               Try Demo Call
@@ -483,11 +483,11 @@ export default function Home() {
           </p>
 
           <a
-            href="tel:7554045078"
+            href="tel:+917554937509"
             className="inline-flex items-center gap-2 sm:gap-3 bg-yellow-400 text-indigo-900 px-6 sm:px-10 py-3 sm:py-5 rounded-full font-bold hover:bg-yellow-300 transition-all shadow-2xl hover:scale-105 text-xs sm:text-sm lg:text-base"
           >
             <Icons.PhoneCall />
-            Call Demo: 7554045078
+            Call Demo: +917554937509
           </a>
         </div>
       </section>
@@ -610,7 +610,7 @@ export default function Home() {
           </div>
 
           <a
-            href="tel:7554045078"
+            href="tel:+917554937509"
             className="inline-flex items-center justify-center gap-2 sm:gap-3 border-2 border-white text-white px-6 sm:px-10 py-3 sm:py-5 rounded-full font-semibold hover:bg-white hover:text-indigo-600 transition-all w-full sm:w-auto text-xs sm:text-sm lg:text-base"
           >
             <Icons.PhoneCall />

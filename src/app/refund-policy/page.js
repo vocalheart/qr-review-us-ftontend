@@ -263,7 +263,7 @@ export default function RefundPolicy() {
           items: [
             "Email: reviewbadhao@gmail.com",
             "Subject line: BILLING INQUIRY or REFUND QUESTION",
-            "Phone: 07554045078",
+            "Phone: 0+917554937509",
             "Hours: Monday - Friday, 9 AM - 6 PM IST",
           ],
         },
@@ -547,7 +547,7 @@ export default function RefundPolicy() {
       <section className="py-8 sm:py-12 bg-gray-900 text-gray-400 text-center text-xs sm:text-sm px-4">
         <div className="max-w-4xl mx-auto">
           <p className="mb-4">
-            <strong>Contact Us:</strong> reviewbadhao@gmail.com | 07554045078 | Bhopal, Madhya Pradesh, India
+            <strong>Contact Us:</strong> reviewbadhao@gmail.com | 0+917554937509 | Bhopal, Madhya Pradesh, India
           </p>
           <p>
             © 2026 ReviewBadhao. All rights reserved. | 
