@@ -360,7 +360,7 @@ function Page() {
                           )}
 
                           {/* Days Remaining */}
-                          {isActive && (
+                          {/* {isActive && (
                             <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3">
                               <Clock className="w-4 h-4 text-emerald-600 flex-shrink-0" />
                               <div>
@@ -372,7 +372,7 @@ function Page() {
                                 </p>
                               </div>
                             </div>
-                          )}
+                          )} */}
                         </div>
 
                         {/* Progress Bar */}
