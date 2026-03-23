@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CheckCircle, Clock, RefreshCw, ArrowRight, Zap, AlertTriangle } from "lucide-react";
-import axios from "../llb/axios";
+import axios from "../../llb/axios";
 
 export default function SuccessPage() {
   const [status, setStatus] = useState("loading"); // "loading" | "active" | "pending" | "error"
