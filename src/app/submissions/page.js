@@ -19,7 +19,71 @@ import {
   Inbox,
   Filter,
   Users,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
+
+const MESSAGE_TRUNCATE_LENGTH = 100;
+
+/* ── Expandable Message (mobile cards) ─────────────────────────────── */
+function ExpandableMessage({ message }) {
+  const [expanded, setExpanded] = useState(false);
+  const isLong = message.length > MESSAGE_TRUNCATE_LENGTH;
+
+  if (!isLong) {
+    return <p className="text-sm text-slate-600 leading-relaxed">{message}</p>;
+  }
+
+  return (
+    <div>
+      <p className="text-sm text-slate-600 leading-relaxed">
+        {expanded ? message : `${message.slice(0, MESSAGE_TRUNCATE_LENGTH)}…`}
+      </p>
+      <button
+        onClick={() => setExpanded((prev) => !prev)}
+        className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
+      >
+        {expanded ? (
+          <>Show less <ChevronUp className="w-3 h-3" /></>
+        ) : (
+          <>Read more <ChevronDown className="w-3 h-3" /></>
+        )}
+      </button>
+    </div>
+  );
+}
+
+/* ── Expandable Message (desktop table) ────────────────────────────── */
+function ExpandableMessageInline({ message }) {
+  const [expanded, setExpanded] = useState(false);
+  const isLong = message.length > MESSAGE_TRUNCATE_LENGTH;
+
+  if (!isLong) {
+    return (
+      <p className="text-sm text-slate-600 leading-relaxed" title={message}>
+        {message}
+      </p>
+    );
+  }
+
+  return (
+    <div className="max-w-xs">
+      <p className="text-sm text-slate-600 leading-relaxed">
+        {expanded ? message : `${message.slice(0, MESSAGE_TRUNCATE_LENGTH)}…`}
+      </p>
+      <button
+        onClick={() => setExpanded((prev) => !prev)}
+        className="mt-0.5 inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
+      >
+        {expanded ? (
+          <>Show less <ChevronUp className="w-3 h-3" /></>
+        ) : (
+          <>Read more <ChevronDown className="w-3 h-3" /></>
+        )}
+      </button>
+    </div>
+  );
+}
 
 /* ── Main Page ─────────────────────────────────────────────────────── */
 export default function SubmissionsPage() {
@@ -36,7 +100,7 @@ function SubmissionsContent() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [filterRating, setFilterRating] = useState(0); // 0 = all
+  const [filterRating, setFilterRating] = useState(0);
   const [page, setPage] = useState(1);
   const [copiedId, setCopiedId] = useState("");
 
@@ -63,7 +127,6 @@ function SubmissionsContent() {
 
   useEffect(() => { fetchFeedbacks(); }, []);
 
-  /* ── Filtered & Paginated ── */
   const filtered = useMemo(() => {
     return feedbacks.filter((fb) => {
       const term = search.toLowerCase();
@@ -83,15 +146,14 @@ function SubmissionsContent() {
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
 
-  /* ── Stats ── */
   const avgRating = feedbacks.length
     ? (feedbacks.reduce((a, fb) => a + (fb.rating || 0), 0) / feedbacks.filter(f => f.rating).length).toFixed(1)
     : null;
+
   const todayCount = feedbacks.filter(
     (fb) => new Date(fb.createdAt).toDateString() === new Date().toDateString()
   ).length;
 
-  /* ── Helpers ── */
   const copyPhone = (phone, id) => {
     navigator.clipboard.writeText(phone);
     setCopiedId(id);
@@ -117,7 +179,6 @@ function SubmissionsContent() {
     URL.revokeObjectURL(url);
   };
 
-  /* ── Stars ── */
   const StarRow = ({ rating }) => (
     <div className="flex gap-0.5">
       {[...Array(5)].map((_, i) => (
@@ -129,7 +190,6 @@ function SubmissionsContent() {
     </div>
   );
 
-  /* ── Rating badge color ── */
   const ratingColor = (r) => {
     if (r >= 4) return "bg-emerald-50 text-emerald-700 border-emerald-200";
     if (r === 3) return "bg-amber-50 text-amber-700 border-amber-200";
@@ -220,7 +280,6 @@ function SubmissionsContent() {
 
         {/* ── Search & Filter Bar ── */}
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex flex-col sm:flex-row gap-3">
-          {/* Search */}
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
@@ -231,8 +290,6 @@ function SubmissionsContent() {
               className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition text-sm bg-slate-50"
             />
           </div>
-
-          {/* Rating Filter */}
           <div className="flex items-center gap-2 flex-wrap">
             <Filter className="w-4 h-4 text-slate-400 shrink-0" />
             {[0, 5, 4, 3, 2, 1].map((r) => (
@@ -252,13 +309,13 @@ function SubmissionsContent() {
         </div>
 
         {/* ── Results count ── */}
-        {search || filterRating > 0 ? (
+        {(search || filterRating > 0) && (
           <p className="text-sm text-slate-500">
             Showing <span className="font-semibold text-slate-700">{filtered.length}</span> result{filtered.length !== 1 ? "s" : ""}
             {search ? ` for "${search}"` : ""}
             {filterRating > 0 ? ` with ${filterRating}★` : ""}
           </p>
-        ) : null}
+        )}
 
         {/* ── Empty State ── */}
         {filtered.length === 0 ? (
@@ -290,8 +347,8 @@ function SubmissionsContent() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {paginated.map((fb, idx) => (
-                    <tr key={fb._id} className="hover:bg-slate-50/60 transition-colors group">
+                  {paginated.map((fb) => (
+                    <tr key={fb._id} className="hover:bg-slate-50/60 transition-colors group align-top">
                       {/* Name */}
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
@@ -327,12 +384,10 @@ function SubmissionsContent() {
                         )}
                       </td>
 
-                      {/* Message */}
-                      <td className="px-5 py-4 max-w-xs">
+                      {/* Message — expandable */}
+                      <td className="px-5 py-4">
                         {fb.message ? (
-                          <p className="text-sm text-slate-600 truncate" title={fb.message}>
-                            {fb.message}
-                          </p>
+                          <ExpandableMessageInline message={fb.message} />
                         ) : (
                           <span className="text-slate-400 text-sm">—</span>
                         )}
@@ -408,10 +463,11 @@ function SubmissionsContent() {
                     </div>
                   )}
 
+                  {/* Message — expandable on mobile */}
                   {fb.message && (
-                    <p className="text-sm text-slate-600 bg-slate-50 rounded-xl px-3 py-2 mb-3 leading-relaxed">
-                      {fb.message}
-                    </p>
+                    <div className="bg-slate-50 rounded-xl px-3 py-2 mb-3">
+                      <ExpandableMessage message={fb.message} />
+                    </div>
                   )}
 
                   <div className="flex items-center gap-1 text-xs text-slate-400">
@@ -436,7 +492,6 @@ function SubmissionsContent() {
                   <ChevronLeft className="w-4 h-4" />
                 </button>
 
-                {/* Page numbers */}
                 <div className="flex items-center gap-1">
                   {[...Array(totalPages)].map((_, i) => {
                     const p = i + 1;

@@ -80,7 +80,7 @@ function Page() {
   /* ── stats ── */
   const totalSpent = history.reduce((a, s) => a + (s.amount || 0), 0) / 100;
   const activeCount = history.filter((s) => s.status === "active").length;
-  const totalCount = history.length;
+  const totalCount = history.length; 
 
   return (
     <ProtectedRoute>
