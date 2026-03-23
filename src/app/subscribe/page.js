@@ -20,9 +20,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 
-/* ─────────────────────────────────────────
-   Plan definitions (frontend display only)
-───────────────────────────────────────── */
+/* ─── Plan definitions ──────────────────────────────────────────────── */
 const PLANS = [
   {
     type: "monthly",
@@ -72,15 +70,25 @@ const PLANS = [
   },
 ];
 
+/* ─── Features ──────────────────────────────────────────────────────── */
 const FEATURES = [
-  { icon: <QrCode className="w-4 h-4" />, text: "Unlimited QR Code Generation" },
-  { icon: <BarChart2 className="w-4 h-4" />, text: "Analytics & Rating Dashboard" },
+  { icon: <QrCode className="w-4 h-4" />,      text: "Unlimited QR Code Generation" },
+  { icon: <BarChart2 className="w-4 h-4" />,   text: "Analytics & Rating Dashboard" },
   { icon: <MessageSquare className="w-4 h-4" />, text: "Feedback Collection & Management" },
-  { icon: <Shield className="w-4 h-4" />, text: "Smart Review Filtering" },
-  { icon: <Zap className="w-4 h-4" />, text: "Instant Activation" },
+  { icon: <Shield className="w-4 h-4" />,       text: "Smart Review Filtering" },
+  { icon: <Zap className="w-4 h-4" />,          text: "Instant Activation" },
 ];
 
-/* gradient per plan on active screen */
+const FEATURES_YEARLY = [
+  { icon: <QrCode className="w-4 h-4" />,      text: "Unlimited QR Code Generation" },
+  { icon: <BarChart2 className="w-4 h-4" />,   text: "Analytics & Rating Dashboard" },
+  { icon: <MessageSquare className="w-4 h-4" />, text: "Feedback Collection & Management" },
+  { icon: <Shield className="w-4 h-4" />,       text: "Smart Review Filtering" },
+  { icon: <Zap className="w-4 h-4" />,          text: "Instant Activation" },
+  { icon: <Crown className="w-4 h-4" />,        text: "Free QR Stand Included" },
+];
+
+/* ─── Active screen gradients ───────────────────────────────────────── */
 const ACTIVE_COLORS = {
   monthly:   "from-slate-500 to-slate-700",
   quarterly: "from-indigo-500 to-violet-600",
@@ -234,13 +242,12 @@ export default function SubscribePage() {
     const startDate = fmtDate(subscriptionStatus.currentStart);
     const endDate   = fmtDate(subscriptionStatus.currentEnd);
 
-    /* progress bar scaled to plan duration */
     const planDays = planType === "monthly" ? 30 : planType === "quarterly" ? 90 : 365;
     const remainingHours = daysLeft * 24 + hoursLeft;
     const pct = Math.max(0, Math.min(100, (remainingHours / (planDays * 24)) * 100));
 
     const periodLabel =
-      planType === "monthly" ? "/ month" :
+      planType === "monthly"   ? "/ month" :
       planType === "quarterly" ? "/ 3 months" :
       "/ year";
 
@@ -249,7 +256,6 @@ export default function SubscribePage() {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-4">
               <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
@@ -260,8 +266,6 @@ export default function SubscribePage() {
           </div>
 
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-
-            {/* Coloured header */}
             <div className={`bg-gradient-to-br ${gradientClass} px-6 py-8 text-white`}>
               <div className="flex items-center justify-between mb-6">
                 <div>
@@ -275,7 +279,6 @@ export default function SubscribePage() {
                   <CheckCircle className="w-7 h-7 text-white" />
                 </div>
               </div>
-
               <div>
                 <div className="flex justify-between text-xs text-white/70 mb-2">
                   <span>Time remaining</span>
@@ -290,7 +293,6 @@ export default function SubscribePage() {
               </div>
             </div>
 
-            {/* Dates */}
             <div className="px-6 py-5 space-y-1">
               <div className="flex items-center justify-between py-3 border-b border-slate-100">
                 <div className="flex items-center gap-2 text-slate-500 text-sm">
@@ -308,7 +310,6 @@ export default function SubscribePage() {
               </div>
             </div>
 
-            {/* CTA */}
             <div className="px-6 pb-6">
               <button
                 onClick={() => (window.location.href = "/dashboard")}
@@ -324,7 +325,7 @@ export default function SubscribePage() {
     );
   }
 
-  /* ── SUBSCRIBE UI – 3 plan cards ── */
+  /* ── SUBSCRIBE UI ── */
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-12">
       <div className="max-w-4xl mx-auto">
@@ -343,6 +344,8 @@ export default function SubscribePage() {
           {PLANS.map((plan) => {
             const isSelected    = selectedPlan === plan.type;
             const isThisLoading = loadingPlan === plan.type;
+            const isYearly      = plan.type === "yearly";
+            const featureList   = isYearly ? FEATURES_YEARLY : FEATURES;
 
             return (
               <div
@@ -360,6 +363,7 @@ export default function SubscribePage() {
                   </div>
                 )}
 
+                {/* Card header */}
                 <div className={`bg-gradient-to-br ${plan.color} px-5 py-6 text-white relative overflow-hidden`}>
                   <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full" />
                   <div className="flex items-center gap-2 mb-3 relative z-10">
@@ -377,19 +381,41 @@ export default function SubscribePage() {
                   </div>
                 </div>
 
+                {/* Features */}
                 <div className="px-5 py-4 border-b border-slate-100">
                   <ul className="space-y-2.5">
-                    {FEATURES.map((f, i) => (
-                      <li key={i} className="flex items-center gap-2.5 text-xs text-slate-600">
-                        <div className={`w-5 h-5 ${plan.accentLight} rounded-md flex items-center justify-center ${plan.accentText} shrink-0`}>
-                          {f.icon}
-                        </div>
-                        {f.text}
-                      </li>
-                    ))}
+                    {featureList.map((f, i) => {
+                      /* highlight the bonus yearly-only feature */
+                      const isBonus = isYearly && i === featureList.length - 1;
+                      return (
+                        <li
+                          key={i}
+                          className={`flex items-center gap-2.5 text-xs ${
+                            isBonus ? "font-semibold text-amber-700" : "text-slate-600"
+                          }`}
+                        >
+                          <div
+                            className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${
+                              isBonus
+                                ? "bg-amber-100 text-amber-600"
+                                : `${plan.accentLight} ${plan.accentText}`
+                            }`}
+                          >
+                            {f.icon}
+                          </div>
+                          {f.text}
+                          {isBonus && (
+                            <span className="ml-auto text-[10px] font-bold bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full whitespace-nowrap">
+                              FREE
+                            </span>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
 
+                {/* CTA */}
                 <div className="px-5 py-4">
                   {waitingForPayment && isSelected ? (
                     <div className="w-full py-3 rounded-xl bg-amber-50 border border-amber-200 text-center">
@@ -427,7 +453,7 @@ export default function SubscribePage() {
                   )}
                   {isSelected && !waitingForPayment && (
                     <p className={`text-center text-xs mt-2 font-medium ${plan.accentText}`}>
-                      ✓ Selected
+                      Selected
                     </p>
                   )}
                 </div>
@@ -467,7 +493,7 @@ export default function SubscribePage() {
             Secured by Razorpay • 256-bit SSL encrypted
           </div>
           <p className="text-center text-xs text-slate-400">
-            ✦ Instant activation after payment &nbsp;•&nbsp; No auto-renewal surprises
+            Instant activation after payment &nbsp;•&nbsp; No auto-renewal surprises
           </p>
         </div>
 

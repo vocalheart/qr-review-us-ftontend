@@ -11,7 +11,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
+  ResponsiveContainer,  
   PieChart,
   Pie,
   Cell,
@@ -43,7 +43,6 @@ function ExpandableMessage({ message }) {
   if (!isLong) {
     return <span className="text-slate-600 text-sm leading-relaxed">{message}</span>;
   }
-
   return (
     <div>
       <span className="text-slate-600 text-sm leading-relaxed">
@@ -62,7 +61,7 @@ function ExpandableMessage({ message }) {
 /* ── Main Page ─────────────────────────────────────────────────────── */
 const DashboardPage = () => (
   <ProtectedRoute>
-    <DashboardContent />
+    <DashboardContent/>
   </ProtectedRoute>
 );
 
@@ -200,7 +199,7 @@ const DashboardContent = () => {
                     <Cell key={i} fill={PIE_COLORS[entry.star - 1]} />
                   ))}
                 </Bar>
-              </BarChart>
+              </BarChart> 
             </ResponsiveContainer>
           </div>
 
@@ -471,12 +470,12 @@ const RecentSubmissionsTable = () => {
                   <Star key={i} className={`w-3.5 h-3.5 ${i < fb.rating ? "text-amber-400 fill-amber-400" : "text-slate-200 fill-slate-200"}`} />
                 ))}
               </div>
-            )}
+            )}   
             {fb.message && (
               <div className="bg-slate-50 rounded-xl px-3 py-2 mb-2">
                 <ExpandableMessage message={fb.message} />
               </div>
-            )}
+            )} 
             <div className="flex items-center gap-1 text-xs text-slate-400">
               <Clock className="w-3 h-3" />
               {new Date(fb.createdAt).toLocaleString("en-IN", {
