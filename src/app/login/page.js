@@ -289,7 +289,7 @@ export default function LoginPage() {
 
       {/* ==================== FORGOT PASSWORD DIALOG ==================== */}
       {showForgotPasswordDialog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black bg-opacity-50 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/10 bg-opacity-50 backdrop-blur-sm">
           <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             {/* Dialog Header */}
             <div className="sticky top-0 bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-4 sm:p-6 lg:p-8 rounded-t-2xl sm:rounded-t-3xl flex items-center justify-between gap-4">

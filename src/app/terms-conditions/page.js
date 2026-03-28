@@ -84,7 +84,7 @@ export default function TermsConditions() {
     {
       num: "2",
       title: "Service Description",
-      color: "purple",
+      color: "purple",  
       icon: Icons.Briefcase,
       content: [
         {

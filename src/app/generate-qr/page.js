@@ -19,11 +19,14 @@ function hexToRgb(hex) {
     parseInt(hex.slice(3, 5), 16),
     parseInt(hex.slice(5, 7), 16),
   ];
-}
+};
+
 function getContrastColor(hex) {
   const [r, g, b] = hexToRgb(hex);
   return (r * 299 + g * 587 + b * 114) / 1000 > 155 ? "#000000" : "#ffffff";
 }
+
+
 function getHue(hex) {
   const [r, g, b] = hexToRgb(hex).map((v) => v / 255);
   const max = Math.max(r, g, b), min = Math.min(r, g, b);
@@ -32,7 +35,9 @@ function getHue(hex) {
         : max === g ? (2 + (b - r) / (max - min)) * 60
         :             (4 + (r - g) / (max - min)) * 60;
   return h < 0 ? h + 360 : h;
-}
+};
+
+
 function roundRectPath(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
