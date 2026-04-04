@@ -34,9 +34,8 @@ export default function Contact() {
     <>
       <style jsx global>{`
         html, body { font-size: 12px; }
-        * { font-size: inherit; }
-      `}</style>
-
+        * { font-size: inherit; }`}
+    </style>
       {/* Hero Section */}
       <section className="relative min-h-[60vh] flex flex-col justify-center items-center text-center bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 text-white overflow-hidden px-4 sm:px-6">
         <div className="absolute inset-0 bg-black opacity-10"></div>
