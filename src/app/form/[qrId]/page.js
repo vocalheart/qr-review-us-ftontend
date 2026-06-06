@@ -32,14 +32,12 @@ export default function FeedbackLanding() {
   const [activationMessage, setActivationMessage] = useState("");
 
   // OTP Flow States
-  // step: "form" | "otp"
-  const [otpStep, setOtpStep] = useState("form");
+  const [otpStep, setOtpStep] = useState("form"); // "form" | "otp"
   const [activating, setActivating] = useState(false);
   const [otpValue, setOtpValue] = useState("");
   const [verifying, setVerifying] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
 
-  // Activate Form State — 4 fields: username, email, phone, randomId (auto)
   const [activateForm, setActivateForm] = useState({
     username: "",
     email: "",
@@ -92,16 +90,11 @@ export default function FeedbackLanding() {
     fetchSettings();
   }, [qrId]);
 
-  // Step 1 — Send OTP
+  // ── Step 1: Send OTP ──
   const handleSendOtp = async (e) => {
     e.preventDefault();
     const { username, email, phone } = activateForm;
-
-    if (!username || !email || !phone) {
-      toast.error("All fields are required");
-      return;
-    }
-
+    if (!username || !email || !phone) { toast.error("All fields are required"); return; }
     setActivating(true);
     try {
       const { data } = await axios.post("/admin/send-create-user-otp", {
@@ -110,7 +103,6 @@ export default function FeedbackLanding() {
         phone: phone.trim(),
         randomId: qrId,
       });
-
       if (data.success) {
         toast.success("OTP sent to your email!");
         setOtpStep("otp");
@@ -125,15 +117,10 @@ export default function FeedbackLanding() {
     }
   };
 
-  // Step 2 — Verify OTP
+  // ── Step 2: Verify OTP ──
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
-
-    if (!otpValue || otpValue.length < 6) {
-      toast.error("Please enter the 6-digit OTP");
-      return;
-    }
-
+    if (!otpValue || otpValue.length < 6) { toast.error("Please enter the 6-digit OTP"); return; }
     setVerifying(true);
     try {
       const { data } = await axios.post("/admin/verify-create-user-otp", {
@@ -141,9 +128,8 @@ export default function FeedbackLanding() {
         otp: otpValue.trim(),
         randomId: qrId,
       });
-
       if (data.success) {
-        toast.success("QR Activated Successfully! Account created. Check your email for credentials.");
+        toast.success("QR Activated Successfully! Check your email for credentials.");
         setIsActivated(true);
         setOtpStep("form");
         setActivateForm({ username: "", email: "", phone: "", randomId: qrId || "" });
@@ -158,7 +144,7 @@ export default function FeedbackLanding() {
     }
   };
 
-  // Resend OTP
+  // ── Resend OTP ──
   const handleResendOtp = async () => {
     if (resendCooldown > 0) return;
     setActivating(true);
@@ -183,12 +169,29 @@ export default function FeedbackLanding() {
     }
   };
 
-  const handleStarClick = (rating) => {
+  // ── ✅ INCREASE RATING COUNTER ──
+  // Called silently on every star click — fire-and-forget, never blocks UX
+  const increaseRatingCounter = async (rating) => {
+    try {
+      await axios.post(`/custom-url/increase-rating/${qrId}`, { rating });
+    } catch (err) {
+      // Silent fail — counter not critical to user flow
+      console.error("Rating counter error:", err?.response?.data?.message || err.message);
+    }
+  };
+
+  // ── Star click handler ──
+  const handleStarClick = async (rating) => {
     setSelectedRating(rating);
+
+    // ✅ Fire counter — don't await so UX stays instant
+    increaseRatingCounter(rating);
+
     if (rating >= 4) {
       setIsExploding(true);
       setTimeout(() => setIsExploding(false), 600);
     }
+
     if (rating >= redirectFromRating && customURL) {
       setTimeout(() => (window.location.href = customURL), 800);
     } else {
@@ -198,12 +201,10 @@ export default function FeedbackLanding() {
 
   const handleStarHover = (rating) => setHoveredRating(rating);
 
+  // ── Submit feedback form ──
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!selectedRating) {
-      toast.error("Please select a rating");
-      return;
-    }
+    if (!selectedRating) { toast.error("Please select a rating"); return; }
     setSubmitting(true);
     try {
       const payload = {
@@ -269,15 +270,13 @@ export default function FeedbackLanding() {
                 </p>
               </div>
 
-              {/* ---- STEP 1: Activation Form ---- */}
+              {/* STEP 1: Activation Form */}
               {otpStep === "form" && (
                 <div className="mb-8">
                   <h2 className="text-xl font-semibold text-gray-800 mb-6 text-center">
                     Activate This QR Code
                   </h2>
-
                   <form onSubmit={handleSendOtp} className="space-y-5">
-                    {/* Full Name */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Full Name <span className="text-red-500">*</span>
@@ -291,8 +290,6 @@ export default function FeedbackLanding() {
                         placeholder="Enter full name"
                       />
                     </div>
-
-                    {/* Email */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Email Address <span className="text-red-500">*</span>
@@ -306,8 +303,6 @@ export default function FeedbackLanding() {
                         placeholder="your@email.com"
                       />
                     </div>
-
-                    {/* Phone */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Phone Number <span className="text-red-500">*</span>
@@ -321,8 +316,6 @@ export default function FeedbackLanding() {
                         placeholder="+91 98765 43210"
                       />
                     </div>
-
-                    {/* QR ID (disabled) */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">QR ID</label>
                       <input
@@ -332,7 +325,6 @@ export default function FeedbackLanding() {
                         className="w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded-2xl text-gray-500 cursor-not-allowed"
                       />
                     </div>
-
                     <button
                       type="submit"
                       disabled={activating}
@@ -346,15 +338,13 @@ export default function FeedbackLanding() {
                           </svg>
                           Sending OTP...
                         </>
-                      ) : (
-                        "Send OTP to Email"
-                      )}
+                      ) : "Send OTP to Email"}
                     </button>
                   </form>
                 </div>
               )}
 
-              {/* ---- STEP 2: OTP Verification ---- */}
+              {/* STEP 2: OTP Verification */}
               {otpStep === "otp" && (
                 <div className="mb-8">
                   <div className="text-center mb-6">
@@ -365,12 +355,11 @@ export default function FeedbackLanding() {
                     </div>
                     <h2 className="text-xl font-semibold text-gray-800 mb-2">Check Your Email</h2>
                     <p className="text-sm text-gray-500">
-                      We sent a 6-digit OTP to <span className="font-semibold text-gray-700">{activateForm.email}</span>
+                      We sent a 6-digit OTP to{" "}
+                      <span className="font-semibold text-gray-700">{activateForm.email}</span>
                     </p>
                   </div>
-
                   <form onSubmit={handleVerifyOtp} className="space-y-5">
-                    {/* OTP Input */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Enter OTP <span className="text-red-500">*</span>
@@ -385,7 +374,6 @@ export default function FeedbackLanding() {
                         placeholder="• • • • • •"
                       />
                     </div>
-
                     <button
                       type="submit"
                       disabled={verifying || otpValue.length < 6}
@@ -399,12 +387,8 @@ export default function FeedbackLanding() {
                           </svg>
                           Verifying...
                         </>
-                      ) : (
-                        "Verify & Activate"
-                      )}
+                      ) : "Verify & Activate"}
                     </button>
-
-                    {/* Back + Resend */}
                     <div className="flex items-center justify-between text-sm pt-1">
                       <button
                         type="button"
@@ -413,7 +397,6 @@ export default function FeedbackLanding() {
                       >
                         ← Change details
                       </button>
-
                       <button
                         type="button"
                         onClick={handleResendOtp}
@@ -567,7 +550,6 @@ export default function FeedbackLanding() {
                   />
                   <p className="text-right text-xs text-gray-500 mt-1">{form.message.length}/300</p>
                 </div>
-
                 <button
                   type="submit"
                   disabled={submitting}
@@ -584,32 +566,31 @@ export default function FeedbackLanding() {
       {/* Animations */}
       <style jsx global>{`
         @keyframes explode {
-          0% { transform: translate(0, 0) scale(1); opacity: 1; }
+          0%   { transform: translate(0, 0) scale(1); opacity: 1; }
           100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
+          to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes slideDown {
           from { opacity: 0; transform: translateY(-20px); }
-          to { opacity: 1; transform: translateY(0); }
+          to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes bounce {
           0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-8px); }
+          50%      { transform: translateY(-8px); }
         }
         @keyframes scaleIn {
           from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
+          to   { opacity: 1; transform: scale(1); }
         }
-
-        .animate-explode { animation: explode 0.8s ease-out forwards; }
-        .animate-fadeIn { animation: fadeIn 0.4s ease-out; }
-        .animate-slideDown { animation: slideDown 0.6s ease-out forwards; }
+        .animate-explode  { animation: explode   0.8s ease-out forwards; }
+        .animate-fadeIn   { animation: fadeIn    0.4s ease-out; }
+        .animate-slideDown{ animation: slideDown 0.6s ease-out forwards; }
         .animate-slideDown.delay-200 { animation-delay: 200ms; }
-        .animate-bounce { animation: bounce 1.2s infinite; }
-        .animate-scaleIn { animation: scaleIn 0.3s ease-out; }
+        .animate-bounce   { animation: bounce    1.2s infinite; }
+        .animate-scaleIn  { animation: scaleIn   0.3s ease-out; }
       `}</style>
     </>
   );
