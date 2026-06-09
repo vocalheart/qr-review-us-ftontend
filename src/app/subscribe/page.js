@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 
 /* ─── Plan definitions ──────────────────────────────────────────────── */
+
 const PLANS = [
   {
     type: "monthly",
@@ -28,7 +29,7 @@ const PLANS = [
     price: "₹649",
     period: "/ month",
     badge: null,
-    description: "Perfect to get started",
+    description: "7 Days Free Trial",
     color: "from-slate-600 to-slate-800",
     accentBg: "bg-slate-600",
     accentText: "text-slate-600",
@@ -37,13 +38,14 @@ const PLANS = [
     accentLight: "bg-slate-100",
     icon: <TrendingUp className="w-5 h-5" />,
   },
+
   {
     type: "quarterly",
     label: "3 Months",
-    price: "₹1449",
+    price: "₹2499",
     period: "/ 3 months",
     badge: "BEST VALUE",
-    description: "Save ₹498 vs monthly",
+    description: "7 Days Free Trial",
     color: "from-indigo-600 to-violet-600",
     accentBg: "bg-indigo-600",
     accentText: "text-indigo-600",
@@ -53,13 +55,14 @@ const PLANS = [
     icon: <Sparkles className="w-5 h-5" />,
     popular: true,
   },
+
   {
     type: "yearly",
     label: "1 Year",
-    price: "₹2499",
+    price: "₹6999",
     period: "/ year",
     badge: "MOST POPULAR",
-    description: "Save ₹3289 vs monthly",
+    description: "7 Days Free Trial + Free QR Stand",
     color: "from-amber-500 to-orange-600",
     accentBg: "bg-amber-500",
     accentText: "text-amber-600",
@@ -69,6 +72,7 @@ const PLANS = [
     icon: <Crown className="w-5 h-5" />,
   },
 ];
+
 
 /* ─── Features ──────────────────────────────────────────────────────── */
 const FEATURES = [
@@ -492,9 +496,11 @@ export default function SubscribePage() {
             <Shield className="w-3.5 h-3.5" />
             Secured by Razorpay • 256-bit SSL encrypted
           </div>
-          <p className="text-center text-xs text-slate-400">
-            Instant activation after payment &nbsp;•&nbsp; No auto-renewal surprises
-          </p>
+
+<p className="text-center text-xs text-slate-400">
+  7 Days Free Trial • Auto Renewal Enabled • Cancel Anytime
+</p>
+
         </div>
 
       </div>
