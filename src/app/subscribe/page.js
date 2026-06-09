@@ -231,7 +231,11 @@ export default function SubscribePage() {
   }
 
   /* ── ACTIVE SUBSCRIPTION ── */
-  if (subscriptionStatus?.status === "active") {
+  const isSubscriptionActive =
+    subscriptionStatus?.status === "active" ||
+    subscriptionStatus?.status === "authenticated";
+
+  if (isSubscriptionActive) {
     const daysLeft  = subscriptionStatus.daysRemaining  || 0;
     const hoursLeft = subscriptionStatus.hoursRemaining || 0;
     const planType  = subscriptionStatus.planType  || "default";
@@ -243,8 +247,15 @@ export default function SubscribePage() {
         ? new Date(val).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
         : "N/A";
 
-    const startDate = fmtDate(subscriptionStatus.currentStart);
-    const endDate   = fmtDate(subscriptionStatus.currentEnd);
+  const startDate = fmtDate(
+  subscriptionStatus.currentStart ||
+  subscriptionStatus.trialStart
+);
+
+const endDate = fmtDate(
+  subscriptionStatus.currentEnd ||
+  subscriptionStatus.trialEnd
+);
 
     const planDays = planType === "monthly" ? 30 : planType === "quarterly" ? 90 : 365;
     const remainingHours = daysLeft * 24 + hoursLeft;
@@ -497,10 +508,9 @@ export default function SubscribePage() {
             Secured by Razorpay • 256-bit SSL encrypted
           </div>
 
-<p className="text-center text-xs text-slate-400">
-  7 Days Free Trial • Auto Renewal Enabled • Cancel Anytime
-</p>
-
+          <p className="text-center text-xs text-slate-400">
+            7 Days Free Trial • Auto Renewal Enabled • Cancel Anytime
+          </p>
         </div>
 
       </div>
