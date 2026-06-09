@@ -26,7 +26,7 @@ const PLANS = [
   {
     type: "monthly",
     label: "Monthly",
-    price: "₹649",
+    price: "₹1199",
     period: "/ month",
     badge: null,
     description: "7 Days Free Trial",
@@ -42,7 +42,7 @@ const PLANS = [
   {
     type: "quarterly",
     label: "3 Months",
-    price: "₹2499",
+    price: "₹2999",
     period: "/ 3 months",
     badge: "BEST VALUE",
     description: "7 Days Free Trial",
@@ -76,39 +76,39 @@ const PLANS = [
 
 /* ─── Features ──────────────────────────────────────────────────────── */
 const FEATURES = [
-  { icon: <QrCode className="w-4 h-4" />,      text: "Unlimited QR Code Generation" },
-  { icon: <BarChart2 className="w-4 h-4" />,   text: "Analytics & Rating Dashboard" },
+  { icon: <QrCode className="w-4 h-4" />, text: "Unlimited QR Code Generation" },
+  { icon: <BarChart2 className="w-4 h-4" />, text: "Analytics & Rating Dashboard" },
   { icon: <MessageSquare className="w-4 h-4" />, text: "Feedback Collection & Management" },
-  { icon: <Shield className="w-4 h-4" />,       text: "Smart Review Filtering" },
-  { icon: <Zap className="w-4 h-4" />,          text: "Instant Activation" },
+  { icon: <Shield className="w-4 h-4" />, text: "Smart Review Filtering" },
+  { icon: <Zap className="w-4 h-4" />, text: "Instant Activation" },
 ];
 
 const FEATURES_YEARLY = [
-  { icon: <QrCode className="w-4 h-4" />,      text: "Unlimited QR Code Generation" },
-  { icon: <BarChart2 className="w-4 h-4" />,   text: "Analytics & Rating Dashboard" },
+  { icon: <QrCode className="w-4 h-4" />, text: "Unlimited QR Code Generation" },
+  { icon: <BarChart2 className="w-4 h-4" />, text: "Analytics & Rating Dashboard" },
   { icon: <MessageSquare className="w-4 h-4" />, text: "Feedback Collection & Management" },
-  { icon: <Shield className="w-4 h-4" />,       text: "Smart Review Filtering" },
-  { icon: <Zap className="w-4 h-4" />,          text: "Instant Activation" },
-  { icon: <Crown className="w-4 h-4" />,        text: "Free QR Stand Included" },
+  { icon: <Shield className="w-4 h-4" />, text: "Smart Review Filtering" },
+  { icon: <Zap className="w-4 h-4" />, text: "Instant Activation" },
+  { icon: <Crown className="w-4 h-4" />, text: "Free QR Stand Included" },
 ];
 
 /* ─── Active screen gradients ───────────────────────────────────────── */
 const ACTIVE_COLORS = {
-  monthly:   "from-slate-500 to-slate-700",
+  monthly: "from-slate-500 to-slate-700",
   quarterly: "from-indigo-500 to-violet-600",
-  yearly:    "from-amber-400 to-orange-500",
-  default:   "from-emerald-500 to-teal-600",
+  yearly: "from-amber-400 to-orange-500",
+  default: "from-emerald-500 to-teal-600",
 };
 
 export default function SubscribePage() {
-  const [loading, setLoading]                       = useState(false);
-  const [loadingPlan, setLoadingPlan]               = useState(null);
-  const [checkingStatus, setCheckingStatus]         = useState(true);
-  const [error, setError]                           = useState("");
-  const [info, setInfo]                             = useState("");
+  const [loading, setLoading] = useState(false);
+  const [loadingPlan, setLoadingPlan] = useState(null);
+  const [checkingStatus, setCheckingStatus] = useState(true);
+  const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
   const [subscriptionStatus, setSubscriptionStatus] = useState(null);
-  const [waitingForPayment, setWaitingForPayment]   = useState(false);
-  const [selectedPlan, setSelectedPlan]             = useState("quarterly");
+  const [waitingForPayment, setWaitingForPayment] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState("quarterly");
 
   const pollingRef = useRef(null);
   const timeoutRef = useRef(null);
@@ -125,7 +125,7 @@ export default function SubscribePage() {
 
   const stopPolling = () => {
     if (pollingRef.current) { clearInterval(pollingRef.current); pollingRef.current = null; }
-    if (timeoutRef.current) { clearTimeout(timeoutRef.current);  timeoutRef.current = null; }
+    if (timeoutRef.current) { clearTimeout(timeoutRef.current); timeoutRef.current = null; }
   };
 
   const checkSubscriptionStatus = async () => {
@@ -236,9 +236,9 @@ export default function SubscribePage() {
     subscriptionStatus?.status === "authenticated";
 
   if (isSubscriptionActive) {
-    const daysLeft  = subscriptionStatus.daysRemaining  || 0;
+    const daysLeft = subscriptionStatus.daysRemaining || 0;
     const hoursLeft = subscriptionStatus.hoursRemaining || 0;
-    const planType  = subscriptionStatus.planType  || "default";
+    const planType = subscriptionStatus.planType || "default";
     const planLabel = subscriptionStatus.planLabel || "Premium Plan";
     const planPrice = subscriptionStatus.planPrice || "";
 
@@ -247,24 +247,24 @@ export default function SubscribePage() {
         ? new Date(val).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
         : "N/A";
 
-  const startDate = fmtDate(
-  subscriptionStatus.currentStart ||
-  subscriptionStatus.trialStart
-);
+    const startDate = fmtDate(
+      subscriptionStatus.currentStart ||
+      subscriptionStatus.trialStart
+    );
 
-const endDate = fmtDate(
-  subscriptionStatus.currentEnd ||
-  subscriptionStatus.trialEnd
-);
+    const endDate = fmtDate(
+      subscriptionStatus.currentEnd ||
+      subscriptionStatus.trialEnd
+    );
 
     const planDays = planType === "monthly" ? 30 : planType === "quarterly" ? 90 : 365;
     const remainingHours = daysLeft * 24 + hoursLeft;
     const pct = Math.max(0, Math.min(100, (remainingHours / (planDays * 24)) * 100));
 
     const periodLabel =
-      planType === "monthly"   ? "/ month" :
-      planType === "quarterly" ? "/ 3 months" :
-      "/ year";
+      planType === "monthly" ? "/ month" :
+        planType === "quarterly" ? "/ 3 months" :
+          "/ year";
 
     const gradientClass = ACTIVE_COLORS[planType] || ACTIVE_COLORS.default;
 
@@ -357,20 +357,19 @@ const endDate = fmtDate(
         {/* Plan Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
           {PLANS.map((plan) => {
-            const isSelected    = selectedPlan === plan.type;
+            const isSelected = selectedPlan === plan.type;
             const isThisLoading = loadingPlan === plan.type;
-            const isYearly      = plan.type === "yearly";
-            const featureList   = isYearly ? FEATURES_YEARLY : FEATURES;
+            const isYearly = plan.type === "yearly";
+            const featureList = isYearly ? FEATURES_YEARLY : FEATURES;
 
             return (
               <div
                 key={plan.type}
                 onClick={() => !waitingForPayment && !loading && setSelectedPlan(plan.type)}
-                className={`relative bg-white rounded-2xl border-2 shadow-sm overflow-hidden cursor-pointer transition-all duration-200 ${
-                  isSelected
+                className={`relative bg-white rounded-2xl border-2 shadow-sm overflow-hidden cursor-pointer transition-all duration-200 ${isSelected
                     ? `${plan.accentBorder} shadow-lg scale-[1.02]`
                     : "border-slate-200 hover:border-slate-300 hover:shadow-md"
-                }`}
+                  }`}
               >
                 {plan.badge && (
                   <div className={`absolute top-3 right-3 text-white text-[10px] font-bold px-2.5 py-1 rounded-full ${plan.accentBg}`}>
@@ -405,16 +404,14 @@ const endDate = fmtDate(
                       return (
                         <li
                           key={i}
-                          className={`flex items-center gap-2.5 text-xs ${
-                            isBonus ? "font-semibold text-amber-700" : "text-slate-600"
-                          }`}
+                          className={`flex items-center gap-2.5 text-xs ${isBonus ? "font-semibold text-amber-700" : "text-slate-600"
+                            }`}
                         >
                           <div
-                            className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${
-                              isBonus
+                            className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${isBonus
                                 ? "bg-amber-100 text-amber-600"
                                 : `${plan.accentLight} ${plan.accentText}`
-                            }`}
+                              }`}
                           >
                             {f.icon}
                           </div>
@@ -446,11 +443,10 @@ const endDate = fmtDate(
                         startSubscription(plan.type);
                       }}
                       disabled={loading || waitingForPayment}
-                      className={`w-full py-3 rounded-xl text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm active:scale-95 ${
-                        loading || waitingForPayment
+                      className={`w-full py-3 rounded-xl text-white font-semibold text-sm transition-all flex items-center justify-center gap-2 shadow-sm active:scale-95 ${loading || waitingForPayment
                           ? "opacity-50 cursor-not-allowed bg-slate-400"
                           : `${plan.accentBg} ${plan.accentHover} hover:shadow-md`
-                      }`}
+                        }`}
                     >
                       {isThisLoading ? (
                         <>
