@@ -92,7 +92,7 @@ export default function LoginPage() {
   const onSendOtp = async (data) => {
     setOtpLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/forgot-password", {
+      const res = await fetch("https://api.reviewbadhao.com/api/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

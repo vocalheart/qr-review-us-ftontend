@@ -376,7 +376,6 @@ export default function SubscribePage() {
                     {plan.badge}
                   </div>
                 )}
-
                 {/* Card header */}
                 <div className={`bg-gradient-to-br ${plan.color} px-5 py-6 text-white relative overflow-hidden`}>
                   <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full" />
